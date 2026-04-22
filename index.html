@@ -1,684 +1,114 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>מבדק דיאגנוסטי רב-שכבתי במתמטיקה – גרסה 2</title>
-  <style>
-    :root{
-      --bg:#f5f7fb;--card:#ffffff;--line:#dbe3ef;--text:#1f2937;--muted:#667085;
-      --primary:#155eef;--secondary:#667085;--success:#067647;--warning:#b54708;--danger:#b42318;
-      --soft:#f8fbff;--soft2:#fffbea;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-    .container{max-width:1180px;margin:24px auto;background:var(--card);border-radius:18px;padding:28px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
-    h1,h2,h3{margin-top:0;line-height:1.35}
-    p,li{line-height:1.7}
-    .lead{color:var(--muted);margin-bottom:22px}
-    .section{display:none}.section.active{display:block}
-    .question,.card{margin-bottom:18px;padding:16px;border:1px solid var(--line);border-radius:14px;background:#fafbfd}
-    .question p{margin:0 0 8px 0}
-    .grid-2,.grid-3{display:grid;gap:16px}.grid-2{grid-template-columns:1fr 1fr}.grid-3{grid-template-columns:1fr 1fr 1fr}
-    @media (max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}.btn-row{flex-direction:column}button{width:100%}}
-    label{display:block;font-weight:bold;margin-top:8px}
-    input[type="text"],input[type="number"],textarea,select{width:100%;margin-top:8px;padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#111827;font-size:16px}
-    textarea{min-height:100px;resize:vertical}
-    .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
-    button{border:none;border-radius:10px;padding:12px 18px;cursor:pointer;font-size:16px;background:var(--primary);color:white}
-    button.secondary{background:var(--secondary)} button.ghost{background:#12b76a} button.copybtn{background:#194185}
-    .progress{font-size:14px;color:var(--muted);margin-bottom:16px}
-    .example{margin-top:10px;padding:10px 12px;border:1px solid #f0df9b;background:var(--soft2);border-radius:10px;color:#5b4a00;font-size:14px}
-    .note{margin-top:10px;font-size:14px;color:var(--muted)} .hidden{display:none}
-    .result-box{margin-top:24px;padding:22px;border:1px solid #dbeafe;background:var(--soft);border-radius:14px;line-height:1.8}
-    .score-big{font-size:56px;font-weight:700;line-height:1;margin:0 0 8px 0}.score-sub{font-size:18px;color:var(--muted);margin:0}
-    .status-ok{color:var(--success);font-weight:bold}.status-bad{color:var(--danger);font-weight:bold}.status-warn{color:var(--warning);font-weight:bold}
-    .domain-card{margin-bottom:16px;padding:14px;background:#fff;border:1px solid var(--line);border-radius:12px}
-    .pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:13px;margin-inline-start:8px;background:#eef4ff;color:#194185}
-    .json-area{width:100%;min-height:260px;font-family:monospace;direction:ltr;text-align:left;white-space:pre}
-    .topic-box{padding:12px;border:1px solid #dbe3ef;border-radius:12px;background:#fff;margin-top:8px}
-    .topic-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:8px}
-    .topic-list label{font-weight:normal;margin-top:0;padding:8px 10px;background:#fff;border:1px solid #e5e7eb;border-radius:10px}
-    .meta-summary{padding:12px;border:1px dashed #bfd1f6;background:#f8fbff;border-radius:12px;margin-top:12px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מבדק דיאגנוסטי</title>
+
+<style>
+body {margin:0;font-family:Arial;background:#f5f7fb;overflow-x:hidden;}
+.container{max-width:100%;padding:16px;margin:auto;}
+.question{margin-bottom:16px;padding:12px;border:1px solid #ddd;border-radius:10px;background:#fff;}
+button{padding:10px 14px;border:none;border-radius:8px;background:#155eef;color:#fff;cursor:pointer;}
+.math{direction:ltr;unicode-bidi:bidi-override;display:inline-block;font-weight:bold;}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>מבדק דיאגנוסטי רב-שכבתי במתמטיקה – גרסה 2</h1>
-    <p class="lead">המערכת מותאמת לשכבות ג׳–ו׳, מאפשרת בחירה של סוג מבחן, רמת קושי ונושאים, ויודעת לשלוף שאלות מתחלפות מתוך בנק שאלות.</p>
+<div class="container">
 
-    <form id="quizForm">
-      <div class="section active" id="setupSection">
-        <h2>הגדרת המבדק</h2>
-        <div class="grid-3">
-          <div class="card">
-            <label for="studentName">שם התלמיד</label>
-            <input type="text" id="studentName" placeholder="הזן שם תלמיד" />
-          </div>
-          <div class="card">
-            <label for="studentClass">כיתה</label>
-            <input type="text" id="studentClass" placeholder="לדוגמה: ה׳2" />
-          </div>
-          <div class="card">
-            <label for="teacherName">שם המורה</label>
-            <input type="text" id="teacherName" placeholder="הזן שם מורה" />
-          </div>
-        </div>
+<h2>הגדרת מבדק</h2>
 
-        <div class="grid-3">
-          <div class="card">
-            <label for="gradeLevel">שכבה</label>
-            <select id="gradeLevel">
-              <option value="3">ג׳</option>
-              <option value="4">ד׳</option>
-              <option value="5" selected>ה׳</option>
-              <option value="6">ו׳</option>
-            </select>
-          </div>
-          <div class="card">
-            <label for="examType">סוג מבחן</label>
-            <select id="examType">
-              <option value="opening">פתיחת שנה</option>
-              <option value="midyear">אמצע שנה</option>
-              <option value="endyear">סוף שנה</option>
-              <option value="focused">מבדק ממוקד</option>
-            </select>
-          </div>
-          <div class="card">
-            <label for="difficultyLevel">רמת קושי</label>
-            <select id="difficultyLevel">
-              <option value="basic">בסיסי</option>
-              <option value="regular" selected>רגיל</option>
-              <option value="advanced">מתקדם</option>
-            </select>
-          </div>
-        </div>
+שם: <input id="name"><br><br>
+כיתה: <input id="class"><br><br>
 
-        <div class="card">
-          <label>נושאים למבדק</label>
-          <div class="note">אם לא תבחר נושאים, המערכת תטען אוטומטית את נושאי החובה הרלוונטיים לשכבה, לסוג המבחן ולרמת הקושי.</div>
-          <div id="topicsContainer" class="topic-list"></div>
-          <div class="btn-row">
-            <button type="button" class="secondary" onclick="applyDefaultTopics()">השתמש בנושאי ברירת המחדל</button>
-            <button type="button" class="secondary" onclick="clearTopics()">נקה בחירה ידנית</button>
-          </div>
-          <div id="topicsSummary" class="meta-summary"></div>
-        </div>
+שכבה:
+<select id="grade">
+<option value="ג">ג</option>
+<option value="ד">ד</option>
+<option value="ה">ה</option>
+<option value="ו">ו</option>
+</select><br><br>
 
-        <div class="btn-row">
-          <button type="button" onclick="buildAssessment()">בנה מבדק והתחל</button>
-        </div>
-        <div id="setupMessage"></div>
-      </div>
+<button onclick="startExam()">התחל מבדק</button>
 
-      <div class="section" id="assessmentSection">
-        <div class="progress" id="assessmentProgress"></div>
-        <h2 id="assessmentTitle">המבדק שלך מוכן</h2>
-        <div id="questionsMount"></div>
-        <div class="btn-row">
-          <button type="button" class="secondary" onclick="goBackToSetup()">חזרה להגדרות</button>
-          <button type="button" class="ghost" onclick="calculateResults()">סיום וקבלת ציון</button>
-        </div>
-      </div>
-    </form>
+<div id="exam"></div>
 
-    <div id="studentResult" class="result-box hidden"></div>
+</div>
 
-    <div id="teacherAccess" class="teacher-box hidden">
-      <h3>אבחון מלא</h3>
-      <div id="teacherAnalysis" class="hidden"></div>
-    </div>
-  </div>
+<script>
 
-  <script>
-    const CURRICULUM_MAP = {
-      3: {
-        opening: ['numbers','place_value','addition_subtraction','multiplication_division','word_problems','measurement','time_money','geometry','math_literacy'],
-        midyear: ['numbers','place_value','addition_subtraction','multiplication_division','word_problems','measurement','time_money','geometry','math_literacy'],
-        endyear: ['numbers','place_value','addition_subtraction','multiplication_division','word_problems','measurement','time_money','geometry','math_literacy'],
-        focused: ['numbers','place_value','addition_subtraction','multiplication_division','word_problems','measurement','time_money','geometry','math_literacy']
-      },
-      4: {
-        opening: ['numbers','addition_subtraction','multiplication_division','word_problems','measurement','geometry','time_money'],
-        midyear: ['numbers','multiplication_division','word_problems','fractions_intro','measurement','geometry','math_literacy'],
-        endyear: ['numbers','multiplication_division','word_problems','fractions_intro','measurement','geometry','math_literacy'],
-        focused: ['numbers','multiplication_division','word_problems','fractions_intro','measurement','geometry','math_literacy']
-      },
-      5: {
-        opening: ['numbers','fractions','word_problems','measurement','geometry','math_literacy','mathematical_reasoning'],
-        midyear: ['numbers','fractions','word_problems','measurement','geometry','percent_intro','math_literacy','mathematical_reasoning'],
-        endyear: ['numbers','fractions','word_problems','measurement','geometry','percent_intro','math_literacy','mathematical_reasoning'],
-        focused: ['numbers','fractions','word_problems','measurement','geometry','percent_intro','math_literacy','mathematical_reasoning']
-      },
-      6: {
-        opening: ['numbers','fractions_decimals','word_problems','measurement','geometry','math_literacy','mathematical_reasoning'],
-        midyear: ['numbers','fractions_decimals','percent','ratio','word_problems','measurement','geometry','math_literacy','mathematical_reasoning'],
-        endyear: ['numbers','fractions_decimals','percent','ratio','word_problems','measurement','geometry','math_literacy','mathematical_reasoning'],
-        focused: ['numbers','fractions_decimals','percent','ratio','word_problems','measurement','geometry','math_literacy','mathematical_reasoning']
-      }
-    };
+const QUESTIONS_PER_TOPIC = 4;
 
-    const TOPIC_LABELS = {
-      numbers:'מספרים טבעיים',
-      place_value:'ערך ספרה',
-      addition_subtraction:'חיבור וחיסור',
-      multiplication_division:'כפל וחילוק',
-      word_problems:'בעיות מילוליות',
-      measurement:'מדידה',
-      time_money:'זמן וכסף',
-      geometry:'גאומטריה',
-      math_literacy:'אוריינות מתמטית',
-      fractions_intro:'שברים בסיסיים',
-      fractions:'שברים',
-      percent_intro:'אחוזים בסיסיים',
-      fractions_decimals:'שברים ושברים עשרוניים',
-      percent:'אחוזים',
-      ratio:'יחס ופרופורציה',
-      mathematical_reasoning:'חשיבה והסבר מתמטי'
-    };
+const questionBank = [
 
-    const TOPIC_DOMAIN_MAP = {
-      numbers:'מספרים ופעולות',
-      place_value:'מספרים ופעולות',
-      addition_subtraction:'מספרים ופעולות',
-      multiplication_division:'מספרים ופעולות',
-      fractions_intro:'שברים',
-      fractions:'שברים',
-      fractions_decimals:'שברים ושברים עשרוניים',
-      percent_intro:'אחוזים ושברים',
-      percent:'אחוזים ושברים',
-      ratio:'יחס ופרופורציה',
-      word_problems:'בעיות מילוליות',
-      measurement:'גאומטריה ומדידה',
-      time_money:'אוריינות מתמטית',
-      geometry:'גאומטריה ומדידה',
-      math_literacy:'אוריינות מתמטית',
-      mathematical_reasoning:'חשיבה מתמטית והבנה'
-    };
+{grade:"ד",topic:"כפל",q:'<span class="math">6 × 7</span>',a:["42","36","48","40"],c:0},
+{grade:"ד",topic:"חילוק",q:'<span class="math">56 ÷ 8</span>',a:["7","6","8","9"],c:0},
+{grade:"ד",topic:"חיבור",q:'<span class="math">345 + 127</span>',a:["472","462","482","452"],c:0},
+{grade:"ד",topic:"חיסור",q:'<span class="math">900 - 275</span>',a:["625","635","615","605"],c:0},
 
-    const QUESTION_BANK = [
-      // Grade 3
-      {id:'g3_n_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'basic',topic:'numbers',type:'mcq',prompt:'מה גדול יותר?',options:['398','389','שווים','אי אפשר לדעת'],correct:'398',hint:'בדוק את ספרת העשרות.',feedback:'משווים תחילה מאות ואז עשרות.',weight:1,skill:'השוואת מספרים'},
-      {id:'g3_pv_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'basic',topic:'place_value',type:'mcq',prompt:'מה הערך של הספרה 4 במספר 342?',options:['4','40','400','14'],correct:'40',hint:'בדוק באיזה מקום נמצאת הספרה.',feedback:'הספרה 4 היא בעשרות.',weight:1,skill:'ערך ספרה'},
-      {id:'g3_as_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'basic',topic:'addition_subtraction',type:'mcq',prompt:'חשב: 257 + 136',options:['383','393','403','413'],correct:'393',hint:'חבר מאות, עשרות ואחדות.',feedback:'257 ועוד 136 שווה 393.',weight:1,skill:'חיבור'},
-      {id:'g3_md_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'multiplication_division',type:'mcq',prompt:'חשב: 7 × 8',options:['54','56','58','64'],correct:'56',hint:'היעזר בלוח הכפל.',feedback:'7 כפול 8 הוא 56.',weight:1,skill:'כפל'},
-      {id:'g3_wp_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'word_problems',type:'mcq',prompt:'בכיתה 6 שולחנות. על כל שולחן 4 ספרים. כמה ספרים יש בסך הכול?',options:['10','20','24','28'],correct:'24',hint:'זהו מצב של קבוצות שוות.',feedback:'6 קבוצות של 4 נותנות 24.',weight:1,skill:'בעיה מילולית'},
-      {id:'g3_me_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'measurement',type:'mcq',prompt:'כמה סנטימטרים יש ב-2 מטרים?',options:['20','200','2000','12'],correct:'200',hint:'מטר אחד הוא 100 ס״מ.',feedback:'2 מטרים הם 200 ס״מ.',weight:1,skill:'המרות'},
-      {id:'g3_tm_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'time_money',type:'mcq',prompt:'מיכל קנתה 3 עפרונות. כל עיפרון עולה 5 ₪. כמה שילמה?',options:['8','10','15','20'],correct:'15',hint:'כפל או חיבור חוזר.',feedback:'3 כפול 5 הם 15.',weight:1,skill:'כסף'},
-      {id:'g3_geo_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'basic',topic:'geometry',type:'mcq',prompt:'למלבן יש:',options:['3 צלעות','4 צלעות','5 צלעות','6 צלעות'],correct:'4',hint:'חשוב על צורת מלבן.',feedback:'למלבן 4 צלעות.',weight:1,skill:'צורות'},
-      {id:'g3_lit_1',grade:3,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'math_literacy',type:'mcq',prompt:'אוטובוס יצא ב-08:10 ונסע שעה. מתי הגיע?',options:['08:20','09:00','09:10','10:10'],correct:'09:10',hint:'הוסף שעה אחת.',feedback:'08:10 ועוד שעה היא 09:10.',weight:1,skill:'קריאת זמן'},
-      // Grade 4
-      {id:'g4_n_1',grade:4,examTypes:['opening','midyear','endyear','focused'],difficulty:'basic',topic:'numbers',type:'mcq',prompt:'מה גדול יותר?',options:['4,506','4,560','שווים','אי אפשר לדעת'],correct:'4,560',hint:'בדוק את ספרת העשרות.',feedback:'4,560 גדול מ-4,506.',weight:1,skill:'השוואת מספרים'},
-      {id:'g4_md_1',grade:4,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'multiplication_division',type:'mcq',prompt:'חשב: 96 ÷ 8',options:['10','11','12','13'],correct:'12',hint:'איזה מספר כפול 8 שווה 96?',feedback:'12 כפול 8 שווה 96.',weight:1,skill:'חילוק'},
-      {id:'g4_fr_1',grade:4,examTypes:['midyear','endyear','focused'],difficulty:'regular',topic:'fractions_intro',type:'mcq',prompt:'איזה שבר מתאים ל-3 חלקים צבועים מתוך 8?',options:['3/5','3/8','8/3','5/8'],correct:'3/8',hint:'המונה הוא החלקים הצבועים.',feedback:'3 מתוך 8 הוא 3/8.',weight:1,skill:'שברים'},
-      {id:'g4_wp_1',grade:4,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'word_problems',type:'mcq',prompt:'במחסן היו 240 קופסאות. מכרו 75. כמה נשארו?',options:['155','165','175','185'],correct:'165',hint:'חיסור.',feedback:'240 פחות 75 הם 165.',weight:1,skill:'בעיה מילולית'},
-      {id:'g4_me_1',grade:4,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'measurement',type:'mcq',prompt:'כמה מיליליטרים יש ב-3 ליטרים?',options:['30','300','3000','30000'],correct:'3000',hint:'ליטר אחד = 1000 מ״ל.',feedback:'3 ליטרים הם 3000 מ״ל.',weight:1,skill:'המרות'},
-      {id:'g4_geo_1',grade:4,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'geometry',type:'mcq',prompt:'מה היקף מלבן שאורכו 6 ס״מ ורוחבו 4 ס״מ?',options:['10','20','24','48'],correct:'20',hint:'2 כפול אורך ועוד רוחב.',feedback:'2×(6+4)=20.',weight:1,skill:'היקף'},
-      {id:'g4_lit_1',grade:4,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'math_literacy',type:'mcq',prompt:'3 מחברות עולות 18 ₪. כמה עולה מחברת אחת?',options:['3','6','9','18'],correct:'6',hint:'חלק 18 ב-3.',feedback:'18 חלקי 3 שווה 6.',weight:1,skill:'אוריינות'},
-      // Grade 5
-      {id:'g5_n_1',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'numbers',type:'mcq',prompt:'חשב: 3,487 + 2,659',options:['6,046','6,146','6,246','6,346'],correct:'6,146',hint:'חבר מאות, עשרות ואחדות.',feedback:'3,487 ועוד 2,659 הם 6,146.',weight:1,skill:'חיבור'},
-      {id:'g5_n_2',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'numbers',type:'mcq',prompt:'חשב: 9,685 - 4,285',options:['5,300','5,400','5,500','5,600'],correct:'5,400',hint:'חיסור במאונך או פירוק לשלבים.',feedback:'9,685 פחות 4,285 הם 5,400.',weight:1,skill:'חיסור'},
-      {id:'g5_frac_1',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'fractions',type:'mcq',prompt:'איזה שבר גדול יותר?',options:['3/4','2/3','שניהם שווים','אי אפשר לדעת'],correct:'3/4',hint:'אפשר להשוות למכנה משותף.',feedback:'3/4 גדול מ-2/3.',weight:1,skill:'השוואת שברים'},
-      {id:'g5_frac_2',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'fractions',type:'mcq',prompt:'חשב: 1/2 + 1/4',options:['2/6','3/4','4/6','1'],correct:'3/4',hint:'כתוב 1/2 כ-2/4.',feedback:'2/4 ועוד 1/4 הם 3/4.',weight:1,skill:'חיבור שברים'},
-      {id:'g5_wp_1',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'word_problems',type:'mcq',prompt:'מחיר חולצה הוא 80 ₪. יש הנחה של 20%. מה המחיר לאחר ההנחה?',options:['60','62','64','68'],correct:'64',hint:'20% מתוך 80 הם 16.',feedback:'80 פחות 16 הם 64.',weight:1,skill:'אחוזים פשוטים'},
-      {id:'g5_wp_2',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'word_problems',type:'mcq',prompt:'5 עפרונות עולים 15 ₪. כמה יעלו 8 עפרונות אם המחיר קבוע?',options:['21','24','27','30'],correct:'24',hint:'מצא תחילה מחיר לעיפרון אחד.',feedback:'15 חלקי 5 שווה 3, ואז 8 כפול 3 שווה 24.',weight:1,skill:'יחס ישר בסיסי'},
-      {id:'g5_me_1',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'measurement',type:'mcq',prompt:'כמה דקות יש ב-4 שעות ו-30 דקות?',options:['240','250','270','290'],correct:'270',hint:'4 שעות הן 240 דקות.',feedback:'240 ועוד 30 הם 270.',weight:1,skill:'זמן'},
-      {id:'g5_geo_1',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'geometry',type:'mcq',prompt:'מהו השטח של מלבן שאורכו 9 ס״מ ורוחבו 4 ס״מ?',options:['13','26','36','45'],correct:'36',hint:'שטח = אורך × רוחב.',feedback:'9 כפול 4 שווה 36.',weight:1,skill:'שטח'},
-      {id:'g5_perc_1',grade:5,examTypes:['midyear','endyear','focused'],difficulty:'advanced',topic:'percent_intro',type:'mcq',prompt:'ספר נמכר ב-120 ₪ לאחר הנחה של 25%. מה היה מחירו לפני ההנחה?',options:['140','150','160','180'],correct:'160',hint:'120 הם 75% מהמחיר המקורי.',feedback:'אם 75% הם 120, אז 100% הם 160.',weight:1,skill:'אחוזים'},
-      {id:'g5_lit_1',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'math_literacy',type:'mcq',prompt:'אוטובוס יצא בשעה 14:35 והגיע לאחר שעה ו-50 דקות. באיזו שעה הגיע?',options:['16:15','16:25','15:25','16:35'],correct:'16:25',hint:'הוסף שעה ואז 50 דקות.',feedback:'14:35 ועוד 1:50 הם 16:25.',weight:1,skill:'אוריינות זמן'},
-      {id:'g5_reason_1',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'mathematical_reasoning',type:'open',prompt:'כתוב שני מספרים שונים שסכומם 100, והסבר איך בדקת שהתשובה נכונה.',placeholder:'לדוגמה: 40 ו-60. בדקתי באמצעות חיבור.',maxScore:2,skill:'הסבר ובקרה',grader:'sum100'},
-      {id:'g5_reason_2',grade:5,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'mathematical_reasoning',type:'open',prompt:'הסבר מדוע 25 × 4 שווה ל-50 × 2.',placeholder:'הסבר במילים או בדוגמה.',maxScore:2,skill:'הסבר מתמטי',grader:'equalProducts'},
-      // Grade 6
-      {id:'g6_n_1',grade:6,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'numbers',type:'mcq',prompt:'חשב: 12,480 ÷ 24',options:['420','480','520','620'],correct:'520',hint:'בדוק כמה כפול 24 נותן 12,480.',feedback:'12,480 חלקי 24 שווה 520.',weight:1,skill:'חילוק'},
-      {id:'g6_fd_1',grade:6,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'fractions_decimals',type:'mcq',prompt:'מהו השבר העשרוני של 3/5?',options:['0.3','0.5','0.6','0.8'],correct:'0.6',hint:'חלק 3 ב-5.',feedback:'3/5 שווה 0.6.',weight:1,skill:'שברים עשרוניים'},
-      {id:'g6_percent_1',grade:6,examTypes:['midyear','endyear','focused'],difficulty:'regular',topic:'percent',type:'mcq',prompt:'40% מ-250 הם:',options:['25','50','100','125'],correct:'100',hint:'10% מ-250 הם 25.',feedback:'4 פעמים 25 הם 100.',weight:1,skill:'אחוזים'},
-      {id:'g6_ratio_1',grade:6,examTypes:['midyear','endyear','focused'],difficulty:'advanced',topic:'ratio',type:'mcq',prompt:'ביחס 2:3, אם הכמות הקטנה היא 8, מהי הכמות הגדולה?',options:['10','12','16','20'],correct:'12',hint:'פי כמה גדל 2 ל-8?',feedback:'2 הוכפל פי 4, לכן 3 יהפוך ל-12.',weight:1,skill:'יחס'},
-      {id:'g6_wp_1',grade:6,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'word_problems',type:'mcq',prompt:'מיכל קראה 3/4 מספר בן 240 עמודים. כמה עמודים קראה?',options:['120','160','180','200'],correct:'180',hint:'מצא רבע ואז כפול 3.',feedback:'240 חלקי 4 הם 60, ושלושה רבעים הם 180.',weight:1,skill:'בעיה מילולית'},
-      {id:'g6_geo_1',grade:6,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'geometry',type:'mcq',prompt:'מה נפח קובייה שאורך צלעה 4 ס״מ?',options:['16','48','64','128'],correct:'64',hint:'נפח קובייה = צלע × צלע × צלע.',feedback:'4×4×4 = 64.',weight:1,skill:'נפח'},
-      {id:'g6_lit_1',grade:6,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'math_literacy',type:'mcq',prompt:'מוצר עלה 200 ₪ והוזל ל-170 ₪. מה אחוז ההנחה?',options:['10%','15%','20%','30%'],correct:'15%',hint:'מצא את גובה ההנחה ואז חלק במחיר המקורי.',feedback:'ההנחה היא 30 ₪, וזה 15% מתוך 200.',weight:1,skill:'אוריינות אחוזים'},
-      {id:'g6_reason_1',grade:6,examTypes:['opening','midyear','endyear','focused'],difficulty:'regular',topic:'mathematical_reasoning',type:'open',prompt:'הסבר מה קורה למספר כאשר מכפילים אותו ב-0.1.',placeholder:'כתוב הסבר ודוגמה.',maxScore:2,skill:'הסבר מתמטי',grader:'timesPointOne'}
-    ];
+{grade:"ה",topic:"כפל",q:'<span class="math">48 × 6</span>',a:["288","268","298","278"],c:0},
+{grade:"ה",topic:"חילוק",q:'<span class="math">156 ÷ 12</span>',a:["13","12","14","11"],c:0},
 
-    let currentSection = 0;
-    let generatedAssessment = [];
-    let assessmentMeta = null;
-    const formSections = document.querySelectorAll('.section');
+];
 
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
+let selectedQuestions = [];
 
-    function getSelectedGrade(){ return Number(document.getElementById('gradeLevel').value); }
-    function getSelectedExamType(){ return document.getElementById('examType').value; }
-    function getSelectedDifficulty(){ return document.getElementById('difficultyLevel').value; }
+function startExam(){
+  const grade = document.getElementById("grade").value;
 
-    function getAvailableTopics() {
-      return CURRICULUM_MAP[getSelectedGrade()][getSelectedExamType()];
-    }
+  const filtered = questionBank.filter(q=>q.grade===grade);
 
-    function renderTopicSelector() {
-      const container = document.getElementById('topicsContainer');
-      const topics = getAvailableTopics();
-      container.innerHTML = topics.map(topic => `
-        <label><input type="checkbox" class="topicCheck" value="${topic}"> ${TOPIC_LABELS[topic]}</label>
-      `).join('');
-      updateTopicSummary();
-    }
+  selectedQuestions = shuffle(filtered).slice(0, QUESTIONS_PER_TOPIC*3);
 
-    function updateTopicSummary() {
-      const selected = [...document.querySelectorAll('.topicCheck:checked')].map(el => el.value);
-      const defaults = getAvailableTopics();
-      const active = selected.length ? selected : defaults;
-      const summary = document.getElementById('topicsSummary');
-      summary.innerHTML = `
-        <strong>נושאים פעילים למבדק:</strong><br>
-        ${active.map(t => TOPIC_LABELS[t]).join(' | ')}
-      `;
-    }
+  renderExam();
+}
 
-    function applyDefaultTopics() {
-      document.querySelectorAll('.topicCheck').forEach(el => el.checked = false);
-      updateTopicSummary();
-    }
+function renderExam(){
+  const examDiv = document.getElementById("exam");
+  examDiv.innerHTML="";
 
-    function clearTopics() {
-      document.querySelectorAll('.topicCheck').forEach(el => el.checked = false);
-      updateTopicSummary();
-    }
+  selectedQuestions.forEach((q,i)=>{
+    let html = `<div class="question">
+    <p>${i+1}. ${q.q}</p>`;
 
-    function getSelectedTopicsOrDefault() {
-      const selected = [...document.querySelectorAll('.topicCheck:checked')].map(el => el.value);
-      return selected.length ? selected : getAvailableTopics();
-    }
+    q.a.forEach((opt,j)=>{
+      html+=`<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`;
+    });
 
-    document.getElementById('gradeLevel').addEventListener('change', renderTopicSelector);
-    document.getElementById('examType').addEventListener('change', renderTopicSelector);
+    html+="</div>";
+    examDiv.innerHTML+=html;
+  });
 
-    function pickQuestions(bank, topics, grade, examType, difficulty) {
-      const difficultyOrder = { basic:0, regular:1, advanced:2 };
-      const selected = [];
-      topics.forEach(topic => {
-        let candidates = bank.filter(q => q.grade === grade && q.topic === topic && q.examTypes.includes(examType) && q.difficulty === difficulty);
-        if (!candidates.length) {
-          candidates = bank.filter(q => q.grade === grade && q.topic === topic && q.examTypes.includes(examType));
-        }
-        candidates = shuffle(candidates);
-        const takeCount = topic === 'mathematical_reasoning' ? 1 : Math.min(2, candidates.length);
-        selected.push(...candidates.slice(0, takeCount));
-      });
-      return shuffle(selected);
-    }
+  examDiv.innerHTML+=`<button onclick="finishExam()">סיום וקבלת ציון</button>`;
+}
 
-    function shuffle(arr){
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    }
+function finishExam(){
+  let score=0;
 
-    function buildAssessment() {
-      const grade = getSelectedGrade();
-      const examType = getSelectedExamType();
-      const difficulty = getSelectedDifficulty();
-      const topics = getSelectedTopicsOrDefault();
-      const studentName = document.getElementById('studentName').value.trim();
-      const studentClass = document.getElementById('studentClass').value.trim();
-      const msg = document.getElementById('setupMessage');
+  selectedQuestions.forEach((q,i)=>{
+    const ans = document.querySelector(`input[name=q${i}]:checked`);
+    if(ans && Number(ans.value)===q.c) score++;
+  });
 
-      if (!studentName || !studentClass) {
-        msg.innerHTML = '<p class="status-bad">שם התלמיד והכיתה הם שדות חובה.</p>';
-        return;
-      }
+  const percent = Math.round(score/selectedQuestions.length*100);
 
-      generatedAssessment = pickQuestions(QUESTION_BANK, topics, grade, examType, difficulty);
-      if (!generatedAssessment.length) {
-        msg.innerHTML = '<p class="status-bad">לא נמצאו שאלות מתאימות להרכב שבחרת. נסה לבחור רמת קושי אחרת או נושאים אחרים.</p>';
-        return;
-      }
+  const result = {
+    name:document.getElementById("name").value,
+    class:document.getElementById("class").value,
+    score:percent
+  };
 
-      msg.innerHTML = '';
-      assessmentMeta = { grade, examType, difficulty, topics };
-      renderAssessment();
-      formSections[currentSection].classList.remove('active');
-      currentSection = 1;
-      formSections[currentSection].classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  localStorage.setItem("diagnosticData",JSON.stringify(result));
 
-    function goBackToSetup() {
-      formSections[currentSection].classList.remove('active');
-      currentSection = 0;
-      formSections[currentSection].classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  window.location.href="plan-generator.html";
+}
 
-    function renderAssessment() {
-      const mount = document.getElementById('questionsMount');
-      const progress = document.getElementById('assessmentProgress');
-      const title = document.getElementById('assessmentTitle');
-      title.textContent = `מבדק לשכבה ${toHebrewGrade(assessmentMeta.grade)} • ${examTypeLabel(assessmentMeta.examType)} • רמת ${difficultyLabel(assessmentMeta.difficulty)}`;
-      progress.textContent = `${generatedAssessment.length} שאלות • נושאים: ${assessmentMeta.topics.map(t => TOPIC_LABELS[t]).join(', ')}`;
+function shuffle(arr){
+  return arr.sort(()=>Math.random()-0.5);
+}
 
-      mount.innerHTML = generatedAssessment.map((q, idx) => renderQuestion(q, idx)).join('');
-    }
+</script>
 
-    function renderQuestion(q, idx) {
-      if (q.type === 'mcq') {
-        return `
-          <div class="question">
-            <p><strong>${idx + 1}.</strong> ${escapeHtml(q.prompt)}</p>
-            <select id="ans_${q.id}">
-              <option value="">בחר תשובה</option>
-              ${q.options.map(opt => `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`).join('')}
-            </select>
-          </div>
-        `;
-      }
-      return `
-        <div class="question">
-          <p><strong>${idx + 1}.</strong> ${escapeHtml(q.prompt)}</p>
-          <textarea id="ans_${q.id}" placeholder="${escapeHtml(q.placeholder || 'כתוב תשובה כאן')}"></textarea>
-          <div class="example">זוהי שאלה פתוחה. המערכת תנתח את התשובה לפי רובריקה.</div>
-        </div>
-      `;
-    }
-
-    function toHebrewGrade(grade){ return ({3:'ג׳',4:'ד׳',5:'ה׳',6:'ו׳'})[grade] || grade; }
-    function examTypeLabel(type){ return ({opening:'פתיחת שנה',midyear:'אמצע שנה',endyear:'סוף שנה',focused:'מבדק ממוקד'})[type] || type; }
-    function difficultyLabel(type){ return ({basic:'בסיסית',regular:'רגילה',advanced:'מתקדמת'})[type] || type; }
-
-    function gradeOpenQuestion(q, answer) {
-      const text = normalizeText(answer);
-      if (!text) return 0;
-      if (q.grader === 'sum100') {
-        const nums = answer.match(/\d+/g) || [];
-        let score = 0;
-        if (nums.length >= 2) {
-          const a = Number(nums[0]), b = Number(nums[1]);
-          if (!Number.isNaN(a) && !Number.isNaN(b) && a !== b && a + b === 100) score += 1;
-        }
-        if (text.includes('100') || text.includes('+') || text.includes('חיבור') || text.includes('בדק') || text.includes('שווה')) score += 1;
-        return Math.min(score, q.maxScore || 2);
-      }
-      if (q.grader === 'equalProducts') {
-        const mentions100 = text.includes('100');
-        const mentionsSame = text.includes('אותה') || text.includes('שווה') || text.includes('מכפלה') || text.includes('תוצאה');
-        const mentionsRelation = text.includes('חצי') || text.includes('פי 2') || text.includes('כפול');
-        if ((mentions100 && mentionsSame) || (mentionsSame && mentionsRelation)) return 2;
-        if (mentions100 || mentionsSame || mentionsRelation) return 1;
-        return 0;
-      }
-      if (q.grader === 'timesPointOne') {
-        const hasSmaller = text.includes('קטן') || text.includes('קטנה') || text.includes('עשירית') || text.includes('0.1') || text.includes('מזיז') || text.includes('נקודה');
-        const hasExample = /\d/.test(text);
-        if (hasSmaller && hasExample) return 2;
-        if (hasSmaller || hasExample) return 1;
-        return 0;
-      }
-      return 0;
-    }
-
-    function calculateResults() {
-      if (!generatedAssessment.length) return;
-      const domainScores = {};
-      const topicScores = {};
-      let totalRaw = 0;
-      let totalMax = 0;
-      const detailedAnswers = {};
-
-      generatedAssessment.forEach(q => {
-        const field = document.getElementById(`ans_${q.id}`);
-        const answer = field ? field.value : '';
-        let score = 0;
-        let maxScore = q.type === 'open' ? (q.maxScore || 2) : 1;
-
-        if (q.type === 'mcq') score = answer === q.correct ? 1 : 0;
-        else score = gradeOpenQuestion(q, answer);
-
-        const domain = TOPIC_DOMAIN_MAP[q.topic] || 'כללי';
-        if (!domainScores[domain]) domainScores[domain] = { score:0, max:0, topicRefs:new Set(), difficulty_type:'' };
-        if (!topicScores[q.topic]) topicScores[q.topic] = { score:0, max:0, label:TOPIC_LABELS[q.topic], domain };
-
-        domainScores[domain].score += score;
-        domainScores[domain].max += maxScore;
-        domainScores[domain].topicRefs.add(q.topic);
-        topicScores[q.topic].score += score;
-        topicScores[q.topic].max += maxScore;
-
-        totalRaw += score;
-        totalMax += maxScore;
-
-        detailedAnswers[q.id] = { prompt:q.prompt, topic:q.topic, answer, score, maxScore, skill:q.skill };
-      });
-
-      Object.keys(domainScores).forEach(domain => {
-        domainScores[domain].percent = Math.round((domainScores[domain].score / domainScores[domain].max) * 100);
-        domainScores[domain].level = getPerformanceLabel(domainScores[domain].percent);
-        domainScores[domain].meaning = getPerformanceMeaning(domain, domainScores[domain].percent);
-        domainScores[domain].difficulty_type = inferErrorTypeByDomain(domain, domainScores[domain].percent);
-      });
-
-      Object.keys(topicScores).forEach(topic => {
-        topicScores[topic].percent = Math.round((topicScores[topic].score / topicScores[topic].max) * 100);
-      });
-
-      const totalPercent = Math.round((totalRaw / totalMax) * 100);
-      const strengths = Object.values(topicScores).filter(t => t.percent >= 85).map(t => t.label);
-      const needsSupport = Object.values(topicScores).filter(t => t.percent < 60).map(t => t.label);
-
-      const structured = {
-        student: {
-          name: document.getElementById('studentName').value.trim(),
-          className: document.getElementById('studentClass').value.trim(),
-          gradeLevel: assessmentMeta.grade,
-          teacherName: document.getElementById('teacherName').value.trim()
-        },
-        assessment_meta: {
-          exam_type: assessmentMeta.examType,
-          exam_type_label: examTypeLabel(assessmentMeta.examType),
-          difficulty: assessmentMeta.difficulty,
-          difficulty_label: difficultyLabel(assessmentMeta.difficulty),
-          topics: assessmentMeta.topics,
-          topics_labels: assessmentMeta.topics.map(t => TOPIC_LABELS[t])
-        },
-        score: totalPercent,
-        summary: {
-          level: getPerformanceLabel(totalPercent),
-          meaning: getFinalMeaning(totalPercent)
-        },
-        domains: Object.fromEntries(Object.entries(domainScores).map(([domain, d]) => [domain, {
-          domain_name: domain,
-          raw_score: d.score,
-          max_score: d.max,
-          percent: d.percent,
-          mastery_level: d.level,
-          difficulty_type: d.difficulty_type,
-          teacher_meaning: d.meaning,
-          topics_included: [...d.topicRefs].map(t => TOPIC_LABELS[t])
-        }])),
-        subskills: Object.fromEntries(Object.entries(topicScores).map(([topic, t]) => [topic, {
-          topic_name: t.label,
-          domain_name: t.domain,
-          raw_score: t.score,
-          max_score: t.max,
-          percent: t.percent
-        }])),
-        strengths,
-        needs_support: needsSupport,
-        pedagogical_flags: buildPedagogicalFlags(domainScores, topicScores),
-        next_step_recommendation: buildRecommendation({ needsSupport })
-      };
-
-      const data = {
-        student: structured.student,
-        answers: detailedAnswers,
-        domainScores,
-        topicScores,
-        strengths,
-        needsSupport,
-        total: {
-          raw: totalRaw,
-          max: totalMax,
-          percent: totalPercent,
-          level: getPerformanceLabel(totalPercent),
-          meaning: getFinalMeaning(totalPercent)
-        },
-        structured
-      };
-
-      window.fullAnalysisData = data;
-      localStorage.setItem('diagnosticStructuredData', JSON.stringify(structured));
-      localStorage.setItem('diagnosticStudentName', structured.student.name || '');
-      localStorage.setItem('diagnosticClassName', structured.student.className || '');
-      localStorage.setItem('diagnosticTeacherName', structured.student.teacherName || '');
-
-      document.getElementById('quizForm').classList.add('hidden');
-      const studentResult = document.getElementById('studentResult');
-      studentResult.innerHTML = `
-        <div class="score-big">${data.total.percent}</div>
-        <p class="score-sub">הציון הסופי</p>
-        <div class="btn-row">
-          <button type="button" class="ghost" onclick="continueToPlanGenerator()">פתח תכנית למידה מותאמת</button>
-          <button type="button" class="ghost" onclick="openMicrosoftForm()">שלח תקציר אבחון לטופס Microsoft Forms</button>
-          <button type="button" class="secondary" onclick="showOpenAnalysis()">הצג אבחון מלא</button>
-        </div>
-        <p class="note">אפשר לפתוח כעת תכנית למידה מותאמת, לשלוח תקציר למורה, או לעיין באבחון המלא.</p>
-      `;
-      studentResult.classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function inferErrorTypeByDomain(domain, percent) {
-      if (percent >= 85) return 'אין אינדיקציה לפער מהותי בתחום זה.';
-      if (domain === 'מספרים ופעולות') return 'קושי בחישוב, בערך ספרה או בשליטה בפעולות בסיסיות.';
-      if (domain.includes('שברים') || domain.includes('אחוזים')) return 'קושי מושגי בשברים, אחוזים או קשרים בין ייצוגים.';
-      if (domain === 'בעיות מילוליות') return 'קושי בתרגום טקסט לפעולה ובפתרון רב־שלבי.';
-      if (domain === 'גאומטריה ומדידה') return 'קושי במדידה, היקף, שטח, נפח או הבחנה בין מושגים.';
-      if (domain === 'אוריינות מתמטית') return 'קושי ביישום המתמטיקה בהקשרים יומיומיים.';
-      if (domain === 'חשיבה מתמטית והבנה') return 'קושי בהסבר, נימוק ובקרה על תהליך החשיבה.';
-      return 'קושי כללי בתחום זה.';
-    }
-
-    function buildPedagogicalFlags(domainScores, topicScores) {
-      const getPercent = (topic) => topicScores[topic]?.percent ?? null;
-      return {
-        computational_knowledge: inferKnowledge(getPercent('numbers') || 0, getPercent('fractions') || getPercent('fractions_intro') || getPercent('fractions_decimals') || 0),
-        application_and_problem_solving: inferApplication(getPercent('word_problems') || 0, getPercent('math_literacy') || 0),
-        mathematical_reasoning: inferThinking(getPercent('mathematical_reasoning') || 0),
-        geometry_and_measurement: inferGeometry(Math.round(((getPercent('geometry') || 0) + (getPercent('measurement') || 0))/((getPercent('geometry') !== null && getPercent('measurement') !== null)?2:1 || 1)))
-      };
-    }
-
-    function continueToPlanGenerator() {
-      const data = window.fullAnalysisData;
-      if (!data) return;
-      localStorage.setItem('diagnosticStructuredData', JSON.stringify(data.structured));
-      localStorage.setItem('diagnosticStudentName', data.student?.name || '');
-      localStorage.setItem('diagnosticClassName', data.student?.className || '');
-      localStorage.setItem('diagnosticTeacherName', data.student?.teacherName || '');
-      window.location.href = 'plan-generator_v2.html';
-    }
-
-    function openMicrosoftForm() {
-      const data = window.fullAnalysisData;
-      if (!data) return;
-      const studentName = data.student?.name || '';
-      const className = data.student?.className || '';
-      const strengths = (data.strengths || []).join(', ') || 'לא זוהו';
-      const weaknesses = (data.needsSupport || []).join(', ') || 'לא זוהו';
-      const diagnosticSummary = `שם התלמיד: ${studentName}\nכיתה: ${className}\nשכבה: ${toHebrewGrade(data.student?.gradeLevel || '')}\nציון: ${data.total?.percent || ''}\n\nתחומים לחיזוק:\n${weaknesses}\n\nתחומים חזקים:\n${strengths}\n\nסיכום:\n${data.total?.meaning || ''}`;
-      const baseUrl = 'https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAN__rwMqcdUNkdaWjNOQzZKV0QzNVNJSTI5MUhOV1BQTC4u';
-      const url = baseUrl +
-        '&r1c74ac76d3d9420b85a753d3933c5f01=' + encodeURIComponent(studentName) +
-        '&rb5b4c33c14ff484aaff23ae1e3aaf9f7=' + encodeURIComponent(className) +
-        '&r28495b0ab2ca4f3991bd35e45014d8de=' + encodeURIComponent(diagnosticSummary);
-      window.open(url, '_blank');
-    }
-
-    function copyStructuredData() {
-      const area = document.getElementById('structuredDataArea');
-      if (!area) return;
-      area.select();
-      area.setSelectionRange(0, 999999);
-      navigator.clipboard.writeText(area.value).then(() => {
-        const msg = document.getElementById('copyMsg');
-        msg.innerHTML = '<p class="status-ok">נתוני האבחון הועתקו.</p>';
-      }).catch(() => {
-        const msg = document.getElementById('copyMsg');
-        msg.innerHTML = '<p class="status-warn">לא ניתן היה להעתיק אוטומטית. אפשר להעתיק ידנית מתוך החלון.</p>';
-      });
-    }
-
-    function showOpenAnalysis() {
-      const teacherAnalysis = document.getElementById('teacherAnalysis');
-      const teacherAccess = document.getElementById('teacherAccess');
-      const data = window.fullAnalysisData;
-      if (!data) return;
-
-      teacherAccess.classList.remove('hidden');
-      teacherAnalysis.innerHTML = `
-        <div class="result-box" style="background:#fff;">
-          <h3>אבחון מלא</h3>
-          <p><strong>שם התלמיד:</strong> ${escapeHtml(data.student.name || 'לא הוזן')}</p>
-          <p><strong>כיתה:</strong> ${escapeHtml(data.student.className || 'לא הוזנה')}</p>
-          <p><strong>שכבה:</strong> ${escapeHtml(toHebrewGrade(data.student.gradeLevel || ''))}</p>
-          <p><strong>שם המורה:</strong> ${escapeHtml(data.student.teacherName || 'לא הוזן')}</p>
-          <p><strong>סוג מבחן:</strong> ${escapeHtml(examTypeLabel(data.structured.assessment_meta.exam_type))}</p>
-          <p><strong>רמת קושי:</strong> ${escapeHtml(difficultyLabel(data.structured.assessment_meta.difficulty))}</p>
-          <p><strong>ציון סופי:</strong> ${data.total.percent} <span class="pill">${escapeHtml(data.total.level)}</span></p>
-          <p><strong>משמעות כללית:</strong> ${escapeHtml(data.total.meaning)}</p>
-
-          <h3>חוזקות בולטות</h3>
-          <p>${data.strengths.length ? escapeHtml(data.strengths.join(', ')) : 'לא זוהו תחומי חוזקה בולטים ברמת שליטה מלאה.'}</p>
-
-          <h3>תחומים המחייבים חיזוק</h3>
-          <p>${data.needsSupport.length ? escapeHtml(data.needsSupport.join(', ')) : 'לא זוהו תחומים המחייבים חיזוק משמעותי.'}</p>
-
-          <h3>פירוט לפי תחומים</h3>
-          ${Object.entries(data.domainScores).map(([domain, d]) => `
-            <div class="domain-card">
-              <strong>${escapeHtml(domain)}</strong><br>
-              <strong>ציון תחומי:</strong> ${d.percent}%<br>
-              <strong>רמת שליטה:</strong> ${escapeHtml(d.level)}<br>
-              <strong>אופי הקושי/הביצוע:</strong> ${escapeHtml(d.difficulty_type)}<br>
-              <strong>פירוש:</strong> ${escapeHtml(d.meaning)}
-            </div>
-          `).join('')}
-
-          <h3>פירוט לפי תת-מיומנויות</h3>
-          ${Object.entries(data.topicScores).map(([topic, t]) => `
-            <div class="domain-card">
-              <strong>${escapeHtml(t.label)}</strong><br>
-              <strong>תחום:</strong> ${escapeHtml(t.domain)}<br>
-              <strong>ציון:</strong> ${t.percent}%
-            </div>
-          `).join('')}
-
-          <h3>המלצה להמשך</h3>
-          <p>${escapeHtml(buildRecommendation(data))}</p>
-
-          <h3>קוד אבחון מלא</h3>
-          <textarea id="structuredDataArea" class="json-area" readonly>${JSON.stringify(data.structured, null, 2)}</textarea>
-
-          <div class="btn-row">
-            <button type="button" class="copybtn" onclick="copyStructuredData()">העתק קוד אבחון</button>
-            <button type="button" class="ghost" onclick="continueToPlanGenerator()">פתח תכנית למידה מותאמת</button>
-          </div>
-          <div id="copyMsg"></div>
-        </div>
-      `;
-      teacherAnalysis.classList.remove('hidden');
-      teacherAccess.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    renderTopicSelector();
-  </script>
 </body>
 </html>

@@ -6,11 +6,11 @@
 <title>מבדק דיאגנוסטי</title>
 
 <style>
-body {margin:0;font-family:Arial;background:#f5f7fb;overflow-x:hidden;}
-.container{max-width:100%;padding:16px;margin:auto;}
-.question{margin-bottom:16px;padding:12px;border:1px solid #ddd;border-radius:10px;background:#fff;}
-button{padding:10px 14px;border:none;border-radius:8px;background:#155eef;color:#fff;cursor:pointer;}
-.math{direction:ltr;unicode-bidi:bidi-override;display:inline-block;font-weight:bold;}
+body{font-family:Arial;background:#f5f7fb;margin:0}
+.container{max-width:900px;margin:auto;padding:16px}
+.question{background:#fff;padding:12px;margin:10px 0;border-radius:10px}
+button{padding:10px 14px;border:none;border-radius:8px;background:#155eef;color:#fff}
+.math{direction:ltr;unicode-bidi:bidi-override}
 </style>
 </head>
 
@@ -19,8 +19,9 @@ button{padding:10px 14px;border:none;border-radius:8px;background:#155eef;color:
 
 <h2>הגדרת מבדק</h2>
 
-שם: <input id="name"><br><br>
-כיתה: <input id="class"><br><br>
+שם תלמיד:<input id="student"><br><br>
+כיתה:<input id="class"><br><br>
+שם מורה:<input id="teacher"><br><br>
 
 שכבה:
 <select id="grade">
@@ -30,7 +31,20 @@ button{padding:10px 14px;border:none;border-radius:8px;background:#155eef;color:
 <option value="ו">ו</option>
 </select><br><br>
 
-<button onclick="startExam()">התחל מבדק</button>
+רמת קושי:
+<select id="level">
+<option value="easy">בסיסית</option>
+<option value="medium">רגילה</option>
+<option value="hard">מתקדמת</option>
+</select><br><br>
+
+נושאים:<br>
+<label><input type="checkbox" value="חשבון"> חשבון</label>
+<label><input type="checkbox" value="שברים"> שברים</label>
+<label><input type="checkbox" value="בעיות"> בעיות מילוליות</label>
+<br><br>
+
+<button onclick="startExam()">התחל מבחן</button>
 
 <div id="exam"></div>
 
@@ -38,74 +52,90 @@ button{padding:10px 14px;border:none;border-radius:8px;background:#155eef;color:
 
 <script>
 
-const QUESTIONS_PER_TOPIC = 4;
+const BANK = [
 
-const questionBank = [
+{g:"ג",t:"חשבון",q:'<span class="math">6+7</span>',a:["13","12","14"],c:0},
+{g:"ג",t:"חשבון",q:'<span class="math">9+8</span>',a:["17","18","16"],c:0},
 
-{grade:"ד",topic:"כפל",q:'<span class="math">6 × 7</span>',a:["42","36","48","40"],c:0},
-{grade:"ד",topic:"חילוק",q:'<span class="math">56 ÷ 8</span>',a:["7","6","8","9"],c:0},
-{grade:"ד",topic:"חיבור",q:'<span class="math">345 + 127</span>',a:["472","462","482","452"],c:0},
-{grade:"ד",topic:"חיסור",q:'<span class="math">900 - 275</span>',a:["625","635","615","605"],c:0},
+{g:"ד",t:"חשבון",q:'<span class="math">48×6</span>',a:["288","268","298"],c:0},
+{g:"ד",t:"חשבון",q:'<span class="math">56÷8</span>',a:["7","8","6"],c:0},
 
-{grade:"ה",topic:"כפל",q:'<span class="math">48 × 6</span>',a:["288","268","298","278"],c:0},
-{grade:"ה",topic:"חילוק",q:'<span class="math">156 ÷ 12</span>',a:["13","12","14","11"],c:0},
+{g:"ה",t:"שברים",q:'1/2 + 1/4',a:["3/4","2/4","1"],c:0},
+{g:"ה",t:"שברים",q:'מה גדול יותר?',a:["3/4","2/3"],c:0},
+
+{g:"ו",t:"בעיות",q:'אם מוצר עולה 100 ויש 20% הנחה?',a:["80","70","90"],c:0},
 
 ];
 
-let selectedQuestions = [];
+let questions=[];
 
 function startExam(){
-  const grade = document.getElementById("grade").value;
 
-  const filtered = questionBank.filter(q=>q.grade===grade);
+const grade = document.getElementById("grade").value;
+const topics = [...document.querySelectorAll("input[type=checkbox]:checked")].map(x=>x.value);
 
-  selectedQuestions = shuffle(filtered).slice(0, QUESTIONS_PER_TOPIC*3);
+let pool = BANK.filter(q=>q.g===grade);
 
-  renderExam();
+if(topics.length>0){
+pool = pool.filter(q=>topics.includes(q.t));
 }
 
-function renderExam(){
-  const examDiv = document.getElementById("exam");
-  examDiv.innerHTML="";
-
-  selectedQuestions.forEach((q,i)=>{
-    let html = `<div class="question">
-    <p>${i+1}. ${q.q}</p>`;
-
-    q.a.forEach((opt,j)=>{
-      html+=`<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`;
-    });
-
-    html+="</div>";
-    examDiv.innerHTML+=html;
-  });
-
-  examDiv.innerHTML+=`<button onclick="finishExam()">סיום וקבלת ציון</button>`;
+if(pool.length===0){
+alert("אין שאלות - בדוק שכבה/נושאים");
+return;
 }
 
-function finishExam(){
-  let score=0;
+questions = shuffle(pool).slice(0,10);
 
-  selectedQuestions.forEach((q,i)=>{
-    const ans = document.querySelector(`input[name=q${i}]:checked`);
-    if(ans && Number(ans.value)===q.c) score++;
-  });
+render();
 
-  const percent = Math.round(score/selectedQuestions.length*100);
-
-  const result = {
-    name:document.getElementById("name").value,
-    class:document.getElementById("class").value,
-    score:percent
-  };
-
-  localStorage.setItem("diagnosticData",JSON.stringify(result));
-
-  window.location.href="plan-generator.html";
 }
 
-function shuffle(arr){
-  return arr.sort(()=>Math.random()-0.5);
+function render(){
+
+const exam = document.getElementById("exam");
+exam.innerHTML="";
+
+questions.forEach((q,i)=>{
+let html=`<div class="question">
+<p>${i+1}. ${q.q}</p>`;
+
+q.a.forEach((opt,j)=>{
+html+=`<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label><br>`;
+});
+
+html+="</div>";
+exam.innerHTML+=html;
+});
+
+exam.innerHTML+=`<button onclick="finish()">סיום</button>`;
+
+}
+
+function finish(){
+
+let score=0;
+
+questions.forEach((q,i)=>{
+const ans=document.querySelector(`input[name=q${i}]:checked`);
+if(ans && Number(ans.value)===q.c) score++;
+});
+
+const result={
+student:document.getElementById("student").value,
+class:document.getElementById("class").value,
+teacher:document.getElementById("teacher").value,
+score:Math.round(score/questions.length*100)
+};
+
+localStorage.setItem("diag",JSON.stringify(result));
+
+window.location.href="plan-generator.html";
+
+}
+
+function shuffle(a){
+return a.sort(()=>Math.random()-0.5);
 }
 
 </script>

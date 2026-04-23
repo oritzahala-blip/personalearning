@@ -329,167 +329,70 @@
   <script>
     const DEFAULT_TOPICS = {
       "ג": {
-        opening: ["מספרים ופעולות", "בעיות מילוליות", "מדידה", "זמן וכסף", "גאומטריה בסיסית"],
-        midyear: ["מספרים ופעולות", "בעיות מילוליות", "מדידה", "זמן וכסף", "גאומטריה בסיסית"],
-        endyear: ["מספרים ופעולות", "בעיות מילוליות", "מדידה", "זמן וכסף", "גאומטריה בסיסית", "אוריינות מתמטית"],
+        opening: ["מספרים ופעולות","בעיות מילוליות","מדידה","גאומטריה בסיסית"],
+        midyear: ["מספרים ופעולות","בעיות מילוליות","מדידה","גאומטריה בסיסית"],
+        endyear: ["מספרים ופעולות","בעיות מילוליות","מדידה","גאומטריה בסיסית","אוריינות מתמטית"],
         focused: []
       },
       "ד": {
-        opening: ["מספרים ופעולות", "בעיות מילוליות", "מדידה", "גאומטריה ומדידה"],
-        midyear: ["מספרים ופעולות", "בעיות מילוליות", "שברים", "גאומטריה ומדידה", "אוריינות מתמטית"],
-        endyear: ["מספרים ופעולות", "בעיות מילוליות", "שברים", "גאומטריה ומדידה", "אוריינות מתמטית", "חשיבה מתמטית"],
+        opening: ["מספרים ופעולות","בעיות מילוליות","גאומטריה","מדידה"],
+        midyear: ["מספרים ופעולות","בעיות מילוליות","שברים","גאומטריה","מדידה","אוריינות מתמטית"],
+        endyear: ["מספרים ופעולות","בעיות מילוליות","שברים","גאומטריה","מדידה","אוריינות מתמטית","חשיבה מתמטית"],
         focused: []
       },
       "ה": {
-        opening: ["מספרים ופעולות", "שברים", "בעיות מילוליות", "גאומטריה ומדידה"],
-        midyear: ["מספרים ופעולות", "שברים", "בעיות מילוליות", "גאומטריה ומדידה", "אוריינות מתמטית", "חשיבה מתמטית"],
-        endyear: ["מספרים ופעולות", "שברים", "בעיות מילוליות", "גאומטריה ומדידה", "אוריינות מתמטית", "חשיבה מתמטית"],
+        opening: ["מספרים ופעולות","שברים","בעיות מילוליות","גאומטריה","מדידה"],
+        midyear: ["מספרים ופעולות","שברים","בעיות מילוליות","גאומטריה","מדידה","אוריינות מתמטית"],
+        endyear: ["מספרים ופעולות","שברים","בעיות מילוליות","גאומטריה","מדידה","אוריינות מתמטית","חשיבה מתמטית"],
         focused: []
       },
       "ו": {
-        opening: ["מספרים ופעולות", "שברים", "אחוזים", "בעיות מילוליות", "גאומטריה ומדידה"],
-        midyear: ["מספרים ופעולות", "שברים", "אחוזים", "בעיות מילוליות", "גאומטריה ומדידה", "חשיבה מתמטית"],
-        endyear: ["מספרים ופעולות", "שברים", "אחוזים", "בעיות מילוליות", "גאומטריה ומדידה", "אוריינות מתמטית", "חשיבה מתמטית"],
+        opening: ["מספרים ופעולות","שברים","בעיות מילוליות","גאומטריה","מדידה"],
+        midyear: ["מספרים ופעולות","שברים","אחוזים","בעיות מילוליות","גאומטריה","מדידה","חשיבה מתמטית"],
+        endyear: ["מספרים ופעולות","שברים","אחוזים","בעיות מילוליות","גאומטריה","מדידה","אוריינות מתמטית","חשיבה מתמטית"],
         focused: []
       }
     };
 
     const ALL_TOPICS_BY_GRADE = {
-      "ג": ["מספרים ופעולות", "בעיות מילוליות", "מדידה", "זמן וכסף", "גאומטריה בסיסית", "אוריינות מתמטית"],
-      "ד": ["מספרים ופעולות", "בעיות מילוליות", "שברים", "גאומטריה ומדידה", "אוריינות מתמטית", "חשיבה מתמטית"],
-      "ה": ["מספרים ופעולות", "שברים", "בעיות מילוליות", "גאומטריה ומדידה", "אוריינות מתמטית", "חשיבה מתמטית"],
-      "ו": ["מספרים ופעולות", "שברים", "אחוזים", "בעיות מילוליות", "גאומטריה ומדידה", "אוריינות מתמטית", "חשיבה מתמטית"]
+      "ג": [
+        "מספרים ופעולות",
+        "בעיות מילוליות",
+        "מדידה",
+        "גאומטריה בסיסית",
+        "אוריינות מתמטית"
+      ],
+      "ד": [
+        "מספרים ופעולות",
+        "בעיות מילוליות",
+        "שברים",
+        "גאומטריה",
+        "מדידה",
+        "אוריינות מתמטית",
+        "חשיבה מתמטית"
+      ],
+      "ה": [
+        "מספרים ופעולות",
+        "שברים",
+        "בעיות מילוליות",
+        "גאומטריה",
+        "מדידה",
+        "אוריינות מתמטית",
+        "חשיבה מתמטית"
+      ],
+      "ו": [
+        "מספרים ופעולות",
+        "שברים",
+        "אחוזים",
+        "בעיות מילוליות",
+        "גאומטריה",
+        "מדידה",
+        "אוריינות מתמטית",
+        "חשיבה מתמטית"
+      ]
     };
 
-    const QUESTIONS_PER_TOPIC = 4;
-
-    const QUESTION_BANK = [
-      // ג - מספרים ופעולות
-      { id:"g_num_1", grade:"ג", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"מספרים ופעולות", subskill:"חיבור", type:"multiple", text:'חשב: <span class="math">248 + 137</span>', options:["365","375","385","395"], correct:"385", explanation:"בודק חיבור מספרים תלת-ספרתיים" },
-      { id:"g_num_2", grade:"ג", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"חיסור", type:"multiple", text:'חשב: <span class="math">503 - 128</span>', options:["365","375","385","395"], correct:"375", explanation:"בודק חיסור עם השאלה" },
-      { id:"g_num_3", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"מספרים ופעולות", subskill:"כפל", type:"multiple", text:'חשב: <span class="math">7 × 8</span>', options:["54","56","58","64"], correct:"56", explanation:"בודק עובדות כפל" },
-      { id:"g_num_4", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"חילוק", type:"multiple", text:'חשב: <span class="math">72 ÷ 8</span>', options:["7","8","9","10"], correct:"9", explanation:"בודק חילוק בסיסי" },
-      { id:"g_num_5", grade:"ג", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"מספרים ופעולות", subskill:"ערך ספרה", type:"multiple", text:'מה הערך של הספרה 6 במספר <span class="math">462</span>?', options:["6","60","600","26"], correct:"60", explanation:"בודק ערך ספרה" },
-      { id:"g_num_6", grade:"ג", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"השוואה", type:"multiple", text:"איזה מספר גדול יותר?", options:["598","589","equal","unknown"], correct:"598", explanation:"השוואת מספרים", customRender:'<div class="math">598 לעומת 589</div>' },
-
-      // ג - בעיות
-      { id:"g_word_1", grade:"ג", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"בעיות מילוליות", subskill:"כפל במציאות", type:"multiple", text:"בכל קופסה יש 6 עפרונות. כמה עפרונות יש ב-4 קופסאות?", options:["20","22","24","26"], correct:"24", explanation:"תרגום כפל מסיטואציה מילולית" },
-      { id:"g_word_2", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"בעיות מילוליות", subskill:"חיבור וחיסור", type:"multiple", text:"בספרייה היו 120 ספרים. נוספו עוד 35 ספרים. כמה ספרים יש עכשיו?", options:["145","150","155","160"], correct:"155", explanation:"תרגום חיבור מבעיה מילולית" },
-      { id:"g_word_3", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"בעיות מילוליות", subskill:"חיסור", type:"multiple", text:"לנועה היו 45 מדבקות. היא נתנה 12 לחברה. כמה נשארו לה?", options:["23","33","43","57"], correct:"33", explanation:"בעיה מילולית עם חיסור" },
-      { id:"g_word_4", grade:"ג", examTypes:["endyear","focused"], difficulty:"regular", topic:"בעיות מילוליות", subskill:"דו שלבי", type:"multiple", text:"בכיתה היו 18 בנים ו-17 בנות. 5 תלמידים יצאו לחוג. כמה תלמידים נשארו בכיתה?", options:["25","30","35","40"], correct:"30", explanation:"בעיה דו-שלבית" },
-
-      // ג - מדידה
-      { id:"g_measure_1", grade:"ג", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"מדידה", subskill:"אורך", type:"multiple", text:"כמה סנטימטרים יש במטר אחד?", options:["10","100","1000","60"], correct:"100", explanation:"יחידות אורך" },
-      { id:"g_measure_2", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"מדידה", subskill:"אורך", type:"multiple", text:"כמה מטרים הם 300 ס״מ?", options:["3","30","0.3","300"], correct:"3", explanation:"המרת יחידות" },
-      { id:"g_measure_3", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"מדידה", subskill:"משקל", type:"multiple", text:"מה כבד יותר?", options:["1 קילו","500 גרם","equal","unknown"], correct:"1 קילו", explanation:"השוואת משקל" },
-      { id:"g_measure_4", grade:"ג", examTypes:["endyear","focused"], difficulty:"regular", topic:"מדידה", subskill:"היקף", type:"multiple", text:"לריבוע יש 4 צלעות באורך 2 ס״מ כל אחת. מה היקפו?", options:["4","6","8","16"], correct:"8", explanation:"היקף בסיסי" },
-
-      // ג - זמן וכסף
-      { id:"g_time_1", grade:"ג", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"זמן וכסף", subskill:"זמן", type:"multiple", text:"אם השעה עכשיו 14:00, מה תהיה השעה בעוד שעה וחצי?", options:["14:30","15:00","15:30","16:00"], correct:"15:30", explanation:"חישוב זמן" },
-      { id:"g_time_2", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"זמן וכסף", subskill:"כסף", type:"multiple", text:"מחיר תפוח הוא 3 ₪. כמה עולים 2 תפוחים?", options:["5","6","7","8"], correct:"6", explanation:"יישום כסף" },
-      { id:"g_time_3", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"זמן וכסף", subskill:"זמן", type:"multiple", text:"הסרט התחיל ב-17:00 ונמשך שעה. מתי הסתיים?", options:["17:30","18:00","18:30","19:00"], correct:"18:00", explanation:"שעה מלאה" },
-      { id:"g_time_4", grade:"ג", examTypes:["endyear","focused"], difficulty:"regular", topic:"זמן וכסף", subskill:"עודף", type:"multiple", text:"מחברת עולה 7 ₪. דנה שילמה ב-10 ₪. כמה עודף קיבלה?", options:["2","3","4","5"], correct:"3", explanation:"חישוב עודף" },
-
-      // ג - גאומטריה
-      { id:"g_geo_1", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"גאומטריה בסיסית", subskill:"צלעות", type:"multiple", text:"למלבן יש כמה צלעות?", options:["3","4","5","6"], correct:"4", explanation:"היכרות עם צורות" },
-      { id:"g_geo_2", grade:"ג", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"גאומטריה בסיסית", subskill:"זיהוי", type:"multiple", text:"לאיזו צורה יש 3 צלעות?", options:["ריבוע","משולש","מלבן","עיגול"], correct:"משולש", explanation:"זיהוי צורות" },
-      { id:"g_geo_3", grade:"ג", examTypes:["endyear","focused"], difficulty:"regular", topic:"גאומטריה בסיסית", subskill:"קודקודים", type:"multiple", text:"לריבוע יש כמה קודקודים?", options:["2","3","4","5"], correct:"4", explanation:"קודקודים" },
-      { id:"g_geo_4", grade:"ג", examTypes:["endyear","focused"], difficulty:"regular", topic:"גאומטריה בסיסית", subskill:"מיון", type:"multiple", text:"איזו צורה אינה מצולע?", options:["משולש","מלבן","עיגול","ריבוע"], correct:"עיגול", explanation:"הבחנה בסיסית" },
-
-      // ג - אוריינות
-      { id:"g_lit_1", grade:"ג", examTypes:["endyear","focused"], difficulty:"regular", topic:"אוריינות מתמטית", subskill:"כסף", type:"multiple", text:"מחיר מחברת הוא 8 ₪. כמה יעלו 3 מחברות?", options:["16","24","28","32"], correct:"24", explanation:"יישום כפל במחיר" },
-      { id:"g_lit_2", grade:"ג", examTypes:["endyear","focused"], difficulty:"regular", topic:"אוריינות מתמטית", subskill:"זמן", type:"multiple", text:"הפסקה מתחילה ב-10:00 ונמשכת 20 דקות. מתי תסתיים?", options:["10:10","10:20","10:30","10:40"], correct:"10:20", explanation:"יישום זמן במציאות" },
-      { id:"g_lit_3", grade:"ג", examTypes:["endyear","focused"], difficulty:"advanced", topic:"אוריינות מתמטית", subskill:"שילוב פעולות", type:"multiple", text:"שתי חבילות עוגיות עולות 5 ₪ כל אחת, ועוד מיץ ב-4 ₪. כמה משלמים בסך הכול?", options:["9","10","14","15"], correct:"14", explanation:"שילוב פעולות" },
-
-      // ד - מספרים ופעולות
-      { id:"d_num_1", grade:"ד", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"מספרים ופעולות", subskill:"חיבור", type:"multiple", text:'חשב: <span class="math">3,248 + 1,576</span>', options:["4,724","4,814","4,824","4,924"], correct:"4,824", explanation:"חיבור מספרים בני ארבע ספרות" },
-      { id:"d_num_2", grade:"ד", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"חיסור", type:"multiple", text:'חשב: <span class="math">5,031 - 1,248</span>', options:["3,673","3,783","3,883","3,973"], correct:"3,783", explanation:"חיסור עם השאלה" },
-      { id:"d_num_3", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"כפל", type:"multiple", text:'חשב: <span class="math">48 × 6</span>', options:["268","278","288","298"], correct:"288", explanation:"כפל דו-ספרתי בחד-ספרתי" },
-      { id:"d_num_4", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"מספרים ופעולות", subskill:"חילוק", type:"multiple", text:'חשב: <span class="math">96 ÷ 8</span>', options:["10","11","12","13"], correct:"12", explanation:"חילוק בסיסי" },
-      { id:"d_num_5", grade:"ד", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"מספרים ופעולות", subskill:"ערך ספרה", type:"multiple", text:'מה הערך של הספרה 7 במספר <span class="math">3,742</span>?', options:["7","70","700","7000"], correct:"700", explanation:"ערך ספרה" },
-      { id:"d_num_6", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"advanced", topic:"מספרים ופעולות", subskill:"השוואה", type:"multiple", text:"איזה מספר גדול יותר?", options:["5,409","5,490","equal","unknown"], correct:"5,490", explanation:"השוואה", customRender:'<div class="math">5,409 לעומת 5,490</div>' },
-
-      // ד - בעיות
-      { id:"d_word_1", grade:"ד", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"בעיות מילוליות", subskill:"כפל", type:"multiple", text:"בכל שורה באולם יש 9 כיסאות. כמה כיסאות יש ב-6 שורות?", options:["45","48","54","63"], correct:"54", explanation:"בעיה מילולית פשוטה" },
-      { id:"d_word_2", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"בעיות מילוליות", subskill:"רב-שלבי", type:"multiple", text:"למאיה היו 120 מדבקות. היא קיבלה עוד 35 ונתנה לחברתה 18. כמה נשארו לה?", options:["127","137","147","157"], correct:"137", explanation:"בעיה דו-שלבית" },
-      { id:"d_word_3", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"בעיות מילוליות", subskill:"חילוק", type:"multiple", text:"96 תלמידים מתחלקים שווה בשווה ל-8 קבוצות. כמה תלמידים בכל קבוצה?", options:["10","11","12","13"], correct:"12", explanation:"חלוקה שווה" },
-      { id:"d_word_4", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"בעיות מילוליות", subskill:"חיבור וחיסור", type:"multiple", text:"בחנות היו 230 עפרונות. נמכרו 58 והגיעו עוד 40. כמה עפרונות יש כעת?", options:["202","212","222","232"], correct:"212", explanation:"בעיה דו-שלבית" },
-
-      // ד - שברים
-      { id:"d_frac_1", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"שברים", subskill:"זיהוי שבר", type:"multiple", text:"איזה שבר מייצג 3 חלקים מתוך 4 חלקים שווים?", options:["3/4","4/3","1/4","2/4"], correct:"3/4", explanation:"הבנת חלק-שלם" },
-      { id:"d_frac_2", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"שברים", subskill:"השוואה", type:"multiple", text:"מה גדול יותר?", options:["1/2","3/4","equal","unknown"], correct:"3/4", explanation:"השוואת שברים פשוטים", customRender:'<div class="math">1/2 לעומת 3/4</div>' },
-      { id:"d_frac_3", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"שברים", subskill:"קבוצה", type:"multiple", text:"בכיתה 12 תלמידים. רבע מהם לובשים חולצה כחולה. כמה תלמידים לובשים חולצה כחולה?", options:["2","3","4","6"], correct:"3", explanation:"שבר מתוך קבוצה" },
-      { id:"d_frac_4", grade:"ד", examTypes:["endyear","focused"], difficulty:"regular", topic:"שברים", subskill:"השוואה", type:"multiple", text:"איזה שבר קטן יותר?", options:["2/4","3/4","equal","unknown"], correct:"2/4", explanation:"השוואת שברים", customRender:'<div class="math">2/4 לעומת 3/4</div>' },
-
-      // ד - גאומטריה
-      { id:"d_geo_1", grade:"ד", examTypes:["opening","midyear","endyear","focused"], difficulty:"basic", topic:"גאומטריה ומדידה", subskill:"היקף", type:"multiple", text:"מהו ההיקף של מלבן שאורכו 6 ס״מ ורוחבו 4 ס״מ?", options:["10","20","24","28"], correct:"20", explanation:"הבחנה בין היקף לשטח" },
-      { id:"d_geo_2", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"גאומטריה ומדידה", subskill:"שטח", type:"multiple", text:"מהו השטח של מלבן שאורכו 7 ס״מ ורוחבו 3 ס״מ?", options:["10","14","21","24"], correct:"21", explanation:"חישוב שטח מלבן" },
-      { id:"d_geo_3", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"גאומטריה ומדידה", subskill:"יחידות", type:"multiple", text:"כמה ס״מ יש ב-2 מטרים?", options:["20","200","2000","120"], correct:"200", explanation:"המרת יחידות" },
-      { id:"d_geo_4", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"גאומטריה ומדידה", subskill:"זוויות", type:"multiple", text:"כמה זוויות יש במלבן?", options:["2","3","4","6"], correct:"4", explanation:"היכרות עם מלבן" },
-
-      // ד - אוריינות
-      { id:"d_lit_1", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"אוריינות מתמטית", subskill:"זמן", type:"multiple", text:"סרט התחיל ב-16:20 ונמשך שעה ו-35 דקות. מתי הסתיים?", options:["17:45","17:55","18:05","18:15"], correct:"17:55", explanation:"יישום זמן" },
-      { id:"d_lit_2", grade:"ד", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"אוריינות מתמטית", subskill:"כסף", type:"multiple", text:"מחיר עיפרון הוא 4 ₪. כמה יעלו 3 עפרונות?", options:["7","8","12","16"], correct:"12", explanation:"מחיר" },
-
-      // ד - חשיבה
-      { id:"d_think_1", grade:"ד", examTypes:["endyear","focused"], difficulty:"regular", topic:"חשיבה מתמטית", subskill:"הסבר", type:"openShort", text:"כתוב שני מספרים שסכומם 100 והסבר איך בדקת.", explanation:"בודק הסבר וחשיבה" },
-
-      // ה - מספרים
-      { id:"h_num_1", grade:"ה", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"חיבור", type:"multiple", text:'חשב: <span class="math">3,487 + 2,659</span>', options:["6,046","6,146","6,246","6,346"], correct:"6,146", explanation:"חיבור מספרים גדולים" },
-      { id:"h_num_2", grade:"ה", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"חיסור", type:"multiple", text:'חשב: <span class="math">9,685 - 4,285</span>', options:["5,300","5,400","5,500","5,600"], correct:"5,400", explanation:"חיסור" },
-      { id:"h_num_3", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"כפל", type:"multiple", text:'חשב: <span class="math">48 × 6</span>', options:["268","278","288","298"], correct:"288", explanation:"כפל" },
-      { id:"h_num_4", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"חילוק", type:"multiple", text:'חשב: <span class="math">156 ÷ 12</span>', options:["11","12","13","14"], correct:"13", explanation:"חילוק" },
-
-      // ה - שברים
-      { id:"h_frac_1", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"שברים", subskill:"השוואה", type:"multiple", text:"מה גדול יותר?", options:["3/4","2/3","equal","unknown"], correct:"3/4", explanation:"השוואת שברים", customRender:'<div class="math">3/4 לעומת 2/3</div>' },
-      { id:"h_frac_2", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"שברים", subskill:"חיבור", type:"multiple", text:'חשב: <span class="math">1/2 + 1/4</span>', options:["2/6","3/4","4/6","1"], correct:"3/4", explanation:"חיבור שברים פשוטים" },
-      { id:"h_frac_3", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"שברים", subskill:"חלק שנותר", type:"multiple", text:'איזה חלק נשאר אם אכלו <span class="math">3/8</span> מהעוגה?', options:["3/8","4/8","5/8","6/8"], correct:"5/8", explanation:"חלק שנותר" },
-      { id:"h_frac_4", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"שברים", subskill:"ייצוג", type:"multiple", text:"מתוך 8 חלקים שווים, 6 צבועים. איזה שבר מתאים למצב?", options:["2/8","6/8","8/6","6/6"], correct:"6/8", explanation:"זיהוי שבר" },
-
-      // ה - בעיות
-      { id:"h_word_1", grade:"ה", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"בעיות מילוליות", subskill:"רב-שלבי", type:"multiple", text:"בספרייה היו 245 ספרים. נקנו עוד 38 ספרים. אחר כך נגרעו 17 ספרים. כמה ספרים יש עכשיו?", options:["256","266","276","286"], correct:"266", explanation:"בעיה רב-שלבית" },
-      { id:"h_word_2", grade:"ה", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"בעיות מילוליות", subskill:"אחוזים", type:"multiple", text:"מחיר חולצה הוא 80 ₪. יש הנחה של 20%. מה יהיה המחיר לאחר ההנחה?", options:["60","62","64","68"], correct:"64", explanation:"אחוזים פשוטים" },
-
-      // ה - גאומטריה
-      { id:"h_geo_1", grade:"ה", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"גאומטריה ומדידה", subskill:"היקף", type:"multiple", text:"מהו ההיקף של מלבן שאורכו 8 ס״מ ורוחבו 5 ס״מ?", options:["13","26","40","45"], correct:"26", explanation:"היקף" },
-      { id:"h_geo_2", grade:"ה", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"גאומטריה ומדידה", subskill:"שטח", type:"multiple", text:"מהו השטח של מלבן שאורכו 9 ס״מ ורוחבו 4 ס״מ?", options:["13","26","36","45"], correct:"36", explanation:"שטח" },
-      { id:"h_geo_3", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"basic", topic:"גאומטריה ומדידה", subskill:"זמן", type:"multiple", text:"כמה דקות יש ב-4 שעות ו-30 דקות?", options:["240","250","270","290"], correct:"270", explanation:"יחידות זמן" },
-      { id:"h_geo_4", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"גאומטריה ומדידה", subskill:"המרות", type:"multiple", text:"כמה מטרים יש ב-350 ס״מ?", options:["0.35","3.5","35","350"], correct:"3.5", explanation:"המרת יחידות" },
-
-      // ה - אוריינות
-      { id:"h_lit_1", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"אוריינות מתמטית", subskill:"זמן", type:"multiple", text:"אוטובוס יצא בשעה 14:35 והגיע לאחר שעה ו-50 דקות. באיזו שעה הגיע?", options:["16:15","16:25","15:25","16:35"], correct:"16:25", explanation:"יישום זמן" },
-      { id:"h_lit_2", grade:"ה", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"אוריינות מתמטית", subskill:"נפח", type:"multiple", text:"בקבוק מים מכיל 1.5 ליטר. כמה ליטר יש ב-6 בקבוקים?", options:["7.5","8","9","9.5"], correct:"9", explanation:"נפח" },
-
-      // ה - חשיבה
-      { id:"h_think_1", grade:"ה", examTypes:["endyear","focused"], difficulty:"regular", topic:"חשיבה מתמטית", subskill:"הנמקה", type:"openShort", text:'הסבר מדוע <span class="math">25 × 4</span> שווה ל-<span class="math">50 × 2</span>.', explanation:"הסבר והנמקה" },
-
-      // ו - מספרים
-      { id:"v_num_1", grade:"ו", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"חילוק", type:"multiple", text:'חשב: <span class="math">156 ÷ 12</span>', options:["11","12","13","14"], correct:"13", explanation:"חילוק" },
-      { id:"v_num_2", grade:"ו", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"מספרים ופעולות", subskill:"חיסור", type:"multiple", text:'חשב: <span class="math">8,000 - 3,476</span>', options:["4,424","4,524","4,624","4,724"], correct:"4,524", explanation:"חיסור" },
-
-      // ו - שברים
-      { id:"v_frac_1", grade:"ו", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"שברים", subskill:"חיבור", type:"multiple", text:'חשב: <span class="math">3/5 + 1/5</span>', options:["3/10","4/5","4/10","1"], correct:"4/5", explanation:"חיבור שברים עם מכנה משותף" },
-      { id:"v_frac_2", grade:"ו", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"שברים", subskill:"השוואה", type:"multiple", text:"מה גדול יותר?", options:["5/6","4/5","equal","unknown"], correct:"5/6", explanation:"השוואה", customRender:'<div class="math">5/6 לעומת 4/5</div>' },
-
-      // ו - אחוזים
-      { id:"v_pct_1", grade:"ו", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"אחוזים", subskill:"הנחה", type:"multiple", text:"מחיר חולצה הוא 80 ₪. יש הנחה של 20%. מה יהיה המחיר לאחר ההנחה?", options:["60","62","64","68"], correct:"64", explanation:"אחוזים" },
-      { id:"v_pct_2", grade:"ו", examTypes:["midyear","endyear","focused"], difficulty:"advanced", topic:"אחוזים", subskill:"אחוז מתוך כמות", type:"multiple", text:"מה הם 25% מתוך 200?", options:["25","40","50","75"], correct:"50", explanation:"אחוז מתוך כמות" },
-
-      // ו - בעיות
-      { id:"v_word_1", grade:"ו", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"בעיות מילוליות", subskill:"רב-שלבי", type:"multiple", text:"5 עפרונות עולים 15 ₪. כמה יעלו 8 עפרונות, אם המחיר לעיפרון נשאר קבוע?", options:["21","24","27","30"], correct:"24", explanation:"יחס פשוט" },
-      { id:"v_word_2", grade:"ו", examTypes:["midyear","endyear","focused"], difficulty:"advanced", topic:"בעיות מילוליות", subskill:"אחוזים", type:"multiple", text:"מחיר אופניים הוא 500 ₪. הייתה הנחה של 10%. כמה משלמים לאחר ההנחה?", options:["440","450","460","490"], correct:"450", explanation:"אחוזים" },
-
-      // ו - גאומטריה
-      { id:"v_geo_1", grade:"ו", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"גאומטריה ומדידה", subskill:"שטח", type:"multiple", text:"מהו השטח של מלבן שאורכו 9 ס״מ ורוחבו 4 ס״מ?", options:["13","26","36","45"], correct:"36", explanation:"שטח מלבן" },
-      { id:"v_geo_2", grade:"ו", examTypes:["opening","midyear","endyear","focused"], difficulty:"regular", topic:"גאומטריה ומדידה", subskill:"היקף", type:"multiple", text:"מהו ההיקף של מלבן שאורכו 12 ס״מ ורוחבו 5 ס״מ?", options:["17","24","34","60"], correct:"34", explanation:"היקף" },
-
-      // ו - אוריינות
-      { id:"v_lit_1", grade:"ו", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"אוריינות מתמטית", subskill:"כסף", type:"multiple", text:"במבצע נמכרים 3 מחברות ב-18 ₪. כמה יעלו 7 מחברות אם המחיר למחברת נשאר קבוע?", options:["36","40","42","48"], correct:"42", explanation:"אוריינות מתמטית" },
-      { id:"v_lit_2", grade:"ו", examTypes:["midyear","endyear","focused"], difficulty:"regular", topic:"אוריינות מתמטית", subskill:"זמן", type:"multiple", text:"טיול כיתתי מתחיל ב-08:20 ונמשך 4 שעות ו-35 דקות. מתי הוא מסתיים?", options:["12:45","12:55","13:05","13:15"], correct:"12:55", explanation:"זמן" },
-
-      // ו - חשיבה
-      { id:"v_think_1", grade:"ו", examTypes:["midyear","endyear","focused"], difficulty:"advanced", topic:"חשיבה מתמטית", subskill:"הסבר", type:"openShort", text:"מה קורה לערך של מספר כאשר מחלקים אותו ב-1,000? הסבר במילים או בדוגמה.", explanation:"הסבר מילולי" }
-    ];
+    const QUESTIONS_PER_TOPIC = 8;
 
     let activeQuestions = [];
     let currentExamConfig = null;
@@ -501,17 +404,568 @@
     gradeSelect.addEventListener('change', renderTopics);
     examTypeSelect.addEventListener('change', renderTopics);
 
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function choice(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function shuffle(arr) {
+      const clone = [...arr];
+      for (let i = clone.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [clone[i], clone[j]] = [clone[j], clone[i]];
+      }
+      return clone;
+    }
+
+    function uniqOptions(correct, distractors) {
+      const set = new Set([String(correct), ...distractors.map(x => String(x))]);
+      return shuffle([...set]).slice(0, 4);
+    }
+
+    function examTypesForAll() {
+      return ["opening","midyear","endyear","focused"];
+    }
+
+    function makeMultiple({ id, grade, topic, difficulty, subskill, text, correct, options, explanation, examTypes, customRender }) {
+      return {
+        id,
+        grade,
+        examTypes: examTypes || examTypesForAll(),
+        difficulty,
+        topic,
+        subskill,
+        type: "multiple",
+        text,
+        options: options.map(String),
+        correct: String(correct),
+        explanation,
+        customRender: customRender || ""
+      };
+    }
+
+    function numberRangeByGrade(grade, difficulty) {
+      const map = {
+        "ג": {
+          basic: [20, 300],
+          regular: [100, 700],
+          advanced: [300, 1200]
+        },
+        "ד": {
+          basic: [100, 999],
+          regular: [300, 2500],
+          advanced: [1000, 5000]
+        },
+        "ה": {
+          basic: [200, 3000],
+          regular: [1000, 9000],
+          advanced: [5000, 25000]
+        },
+        "ו": {
+          basic: [300, 5000],
+          regular: [2000, 15000],
+          advanced: [5000, 50000]
+        }
+      };
+      return map[grade][difficulty];
+    }
+
+    function arithmeticGenerators(grade, difficulty, countPerType = 12) {
+      const out = [];
+      const [minN, maxN] = numberRangeByGrade(grade, difficulty);
+
+      for (let i = 0; i < countPerType; i++) {
+        let a = rand(minN, maxN);
+        let b = rand(minN, maxN);
+
+        out.push(makeMultiple({
+          id: `${grade}_num_add_${difficulty}_${i}`,
+          grade,
+          topic: "מספרים ופעולות",
+          difficulty,
+          subskill: "חיבור",
+          text: `חשב: <span class="math">${a.toLocaleString('en-US')} + ${b.toLocaleString('en-US')}</span>`,
+          correct: a + b,
+          options: uniqOptions(a + b, [a + b + rand(10, 100), a + b - rand(10, 100), a + b + rand(101, 300)]),
+          explanation: "חישוב חיבור"
+        }));
+
+        if (a < b) [a, b] = [b, a];
+        out.push(makeMultiple({
+          id: `${grade}_num_sub_${difficulty}_${i}`,
+          grade,
+          topic: "מספרים ופעולות",
+          difficulty,
+          subskill: "חיסור",
+          text: `חשב: <span class="math">${a.toLocaleString('en-US')} - ${b.toLocaleString('en-US')}</span>`,
+          correct: a - b,
+          options: uniqOptions(a - b, [a - b + rand(10, 100), Math.max(0, a - b - rand(10, 100)), a - b + rand(101, 250)]),
+          explanation: "חישוב חיסור"
+        }));
+      }
+
+      const mulMaxA = grade === "ג" ? 10 : grade === "ד" ? 20 : grade === "ה" ? 40 : 60;
+      const mulMaxB = grade === "ג" ? 10 : grade === "ד" ? 12 : grade === "ה" ? 20 : 25;
+
+      for (let i = 0; i < countPerType; i++) {
+        const a = rand(2, mulMaxA);
+        const b = rand(2, mulMaxB);
+        const c = a * b;
+
+        out.push(makeMultiple({
+          id: `${grade}_num_mul_${difficulty}_${i}`,
+          grade,
+          topic: "מספרים ופעולות",
+          difficulty,
+          subskill: "כפל",
+          text: `חשב: <span class="math">${a} × ${b}</span>`,
+          correct: c,
+          options: uniqOptions(c, [c + rand(1, 12), Math.max(1, c - rand(1, 12)), c + rand(13, 30)]),
+          explanation: "חישוב כפל"
+        }));
+
+        const divisor = rand(2, Math.min(12, mulMaxB));
+        const quotient = rand(2, mulMaxA);
+        const dividend = divisor * quotient;
+
+        out.push(makeMultiple({
+          id: `${grade}_num_div_${difficulty}_${i}`,
+          grade,
+          topic: "מספרים ופעולות",
+          difficulty,
+          subskill: "חילוק",
+          text: `חשב: <span class="math">${dividend} ÷ ${divisor}</span>`,
+          correct: quotient,
+          options: uniqOptions(quotient, [quotient + 1, Math.max(1, quotient - 1), quotient + 2]),
+          explanation: "חישוב חילוק"
+        }));
+      }
+
+      for (let i = 0; i < 10; i++) {
+        const n = rand(100, grade === "ג" ? 999 : grade === "ד" ? 9999 : 99999);
+        const digits = String(n).split('');
+        const idx = rand(0, digits.length - 1);
+        const digit = Number(digits[idx]);
+        const place = digits.length - idx - 1;
+        const value = digit * Math.pow(10, place);
+
+        out.push(makeMultiple({
+          id: `${grade}_num_place_${difficulty}_${i}`,
+          grade,
+          topic: "מספרים ופעולות",
+          difficulty,
+          subskill: "ערך ספרה",
+          text: `מה הערך של הספרה ${digit} במספר <span class="math">${n.toLocaleString('en-US')}</span>?`,
+          correct: value,
+          options: uniqOptions(value, [digit, digit * 10, digit * 1000]),
+          explanation: "ערך ספרה"
+        }));
+      }
+
+      return out;
+    }
+
+    function wordProblemGenerators(grade, difficulty, count = 16) {
+      const out = [];
+      const nouns = ["מחברות", "עפרונות", "ספרים", "מדבקות", "כיסאות", "כדורים"];
+
+      for (let i = 0; i < count; i++) {
+        const item = choice(nouns);
+        const per = rand(3, grade === "ג" ? 9 : 15);
+        const groups = rand(3, grade === "ג" ? 8 : 12);
+        const total = per * groups;
+
+        out.push(makeMultiple({
+          id: `${grade}_word_mul_${difficulty}_${i}`,
+          grade,
+          topic: "בעיות מילוליות",
+          difficulty,
+          subskill: "כפל בבעיה מילולית",
+          text: `בכל קופסה יש ${per} ${item}. כמה ${item} יש ב-${groups} קופסאות?`,
+          correct: total,
+          options: uniqOptions(total, [total + per, total - per, total + groups]),
+          explanation: "תרגום בעיה מילולית לכפל"
+        }));
+
+        const start = rand(80, 500);
+        const add = rand(15, 90);
+        const remove = rand(10, 60);
+        const result = start + add - remove;
+
+        out.push(makeMultiple({
+          id: `${grade}_word_steps_${difficulty}_${i}`,
+          grade,
+          topic: "בעיות מילוליות",
+          difficulty,
+          subskill: "בעיה דו-שלבית",
+          text: `בספרייה היו ${start} ספרים. נוספו עוד ${add} ספרים ולאחר מכן נגרעו ${remove} ספרים. כמה ספרים יש עכשיו?`,
+          correct: result,
+          options: uniqOptions(result, [result + add, result - add, result + remove]),
+          explanation: "בעיה רב-שלבית"
+        }));
+      }
+
+      return out;
+    }
+
+    function measurementGenerators(grade, difficulty, count = 12) {
+      const out = [];
+
+      for (let i = 0; i < count; i++) {
+        const meters = rand(1, 9);
+        out.push(makeMultiple({
+          id: `${grade}_measure_cm_${difficulty}_${i}`,
+          grade,
+          topic: "מדידה",
+          difficulty,
+          subskill: "המרת יחידות",
+          text: `כמה ס״מ יש ב-${meters} מטרים?`,
+          correct: meters * 100,
+          options: uniqOptions(meters * 100, [meters * 10, meters * 1000, meters * 50]),
+          explanation: "המרת מטרים לסנטימטרים"
+        }));
+
+        const hours = rand(1, 5);
+        const minutes = choice([10, 15, 20, 25, 30, 40, 45, 50]);
+        const totalMinutes = hours * 60 + minutes;
+
+        out.push(makeMultiple({
+          id: `${grade}_measure_time_${difficulty}_${i}`,
+          grade,
+          topic: "מדידה",
+          difficulty,
+          subskill: "יחידות זמן",
+          text: `כמה דקות יש ב-${hours} שעות ו-${minutes} דקות?`,
+          correct: totalMinutes,
+          options: uniqOptions(totalMinutes, [hours * 60, totalMinutes + 10, totalMinutes - 10]),
+          explanation: "המרת שעות ודקות לדקות"
+        }));
+      }
+
+      return out;
+    }
+
+    function geometryGenerators(grade, difficulty, count = 14) {
+      const out = [];
+      const topic = grade === "ג" ? "גאומטריה בסיסית" : "גאומטריה";
+
+      for (let i = 0; i < count; i++) {
+        const length = rand(3, 15);
+        const width = rand(2, 10);
+        const perimeter = 2 * (length + width);
+        const area = length * width;
+
+        if (grade !== "ג") {
+          out.push(makeMultiple({
+            id: `${grade}_geo_per_${difficulty}_${i}`,
+            grade,
+            topic,
+            difficulty,
+            subskill: "היקף",
+            text: `מהו ההיקף של מלבן שאורכו ${length} ס״מ ורוחבו ${width} ס״מ?`,
+            correct: perimeter,
+            options: uniqOptions(perimeter, [length + width, area, perimeter + 4]),
+            explanation: "חישוב היקף מלבן"
+          }));
+
+          out.push(makeMultiple({
+            id: `${grade}_geo_area_${difficulty}_${i}`,
+            grade,
+            topic,
+            difficulty,
+            subskill: "שטח",
+            text: `מהו השטח של מלבן שאורכו ${length} ס״מ ורוחבו ${width} ס״מ?`,
+            correct: area,
+            options: uniqOptions(area, [perimeter, area + length, area + width]),
+            explanation: "חישוב שטח מלבן"
+          }));
+        } else {
+          const shape = choice([
+            { name: "משולש", sides: 3 },
+            { name: "מלבן", sides: 4 },
+            { name: "ריבוע", sides: 4 },
+            { name: "מחומש", sides: 5 }
+          ]);
+
+          out.push(makeMultiple({
+            id: `${grade}_geo_shape_${difficulty}_${i}`,
+            grade,
+            topic,
+            difficulty,
+            subskill: "זיהוי צורות",
+            text: `ל${shape.name} יש כמה צלעות?`,
+            correct: shape.sides,
+            options: uniqOptions(shape.sides, [2, 4, 6]),
+            explanation: "היכרות עם צורות"
+          }));
+        }
+      }
+
+      return out;
+    }
+
+    function fractionGenerators(grade, difficulty, count = 18) {
+      const out = [];
+      const denominators = grade === "ד" ? [2,4,8,10] : [2,3,4,5,6,8,10,12];
+
+      for (let i = 0; i < count; i++) {
+        const d1 = choice(denominators);
+        const n1 = rand(1, d1 - 1);
+
+        out.push(makeMultiple({
+          id: `${grade}_frac_ident_${difficulty}_${i}`,
+          grade,
+          topic: "שברים",
+          difficulty,
+          subskill: "זיהוי שבר",
+          text: `איזה שבר מייצג ${n1} חלקים מתוך ${d1} חלקים שווים?`,
+          correct: `${n1}/${d1}`,
+          options: shuffle([`${n1}/${d1}`, `${d1}/${n1}`, `1/${d1}`, `${Math.max(1,n1-1)}/${d1}`]),
+          explanation: "זיהוי שבר"
+        }));
+
+        const d2 = choice(denominators);
+        const n2 = rand(1, d2 - 1);
+        const v1 = n1 / d1;
+        const v2 = n2 / d2;
+        const bigger = v1 === v2 ? "equal" : (v1 > v2 ? `${n1}/${d1}` : `${n2}/${d2}`);
+
+        out.push(makeMultiple({
+          id: `${grade}_frac_cmp_${difficulty}_${i}`,
+          grade,
+          topic: "שברים",
+          difficulty,
+          subskill: "השוואת שברים",
+          text: `מה גדול יותר?`,
+          customRender: `<div class="math">${n1}/${d1} לעומת ${n2}/${d2}</div>`,
+          correct: bigger,
+          options: shuffle([`${n1}/${d1}`, `${n2}/${d2}`, "equal", "unknown"]),
+          explanation: "השוואת שברים"
+        }));
+      }
+
+      return out;
+    }
+
+    function literacyGenerators(grade, difficulty, count = 16) {
+      const out = [];
+
+      for (let i = 0; i < count; i++) {
+        const price = rand(3, 12);
+        const qty = rand(2, 8);
+        const total = price * qty;
+
+        out.push(makeMultiple({
+          id: `${grade}_lit_money_${difficulty}_${i}`,
+          grade,
+          topic: "אוריינות מתמטית",
+          difficulty,
+          subskill: "כסף",
+          text: `מחיר מחברת הוא ${price} ₪. כמה יעלו ${qty} מחברות?`,
+          correct: total,
+          options: uniqOptions(total, [total + price, total - price, total + qty]),
+          explanation: "יישום מתמטי בסיטואציה יומיומית"
+        }));
+
+        const startHour = rand(8, 18);
+        const startMinute = choice([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]);
+        const durMin = choice([20, 30, 35, 40, 45, 50, 60, 75, 90, 110, 135]);
+        const totalStart = startHour * 60 + startMinute;
+        const totalEnd = totalStart + durMin;
+        const endH = Math.floor(totalEnd / 60);
+        const endM = totalEnd % 60;
+        const correctTime = `${String(endH).padStart(2,'0')}:${String(endM).padStart(2,'0')}`;
+
+        const wrong1 = `${String(endH).padStart(2,'0')}:${String((endM + 10) % 60).padStart(2,'0')}`;
+        const wrong2 = `${String(Math.max(0, endH - 1)).padStart(2,'0')}:${String(endM).padStart(2,'0')}`;
+        const wrong3 = `${String(endH).padStart(2,'0')}:${String((endM + 20) % 60).padStart(2,'0')}`;
+
+        out.push(makeMultiple({
+          id: `${grade}_lit_time_${difficulty}_${i}`,
+          grade,
+          topic: "אוריינות מתמטית",
+          difficulty,
+          subskill: "זמן",
+          text: `אירוע התחיל בשעה ${String(startHour).padStart(2,'0')}:${String(startMinute).padStart(2,'0')} ונמשך ${durMin} דקות. מתי הוא הסתיים?`,
+          correct: correctTime,
+          options: shuffle([correctTime, wrong1, wrong2, wrong3]),
+          explanation: "חישוב זמן"
+        }));
+      }
+
+      return out;
+    }
+
+    function percentGenerators(grade, difficulty, count = 16) {
+      const out = [];
+      if (grade !== "ו") return out;
+
+      for (let i = 0; i < count; i++) {
+        const base = choice([100, 120, 150, 200, 240, 300, 400, 500]);
+        const pct = choice([10, 20, 25, 50]);
+        const val = base * pct / 100;
+
+        out.push(makeMultiple({
+          id: `${grade}_pct_part_${difficulty}_${i}`,
+          grade,
+          topic: "אחוזים",
+          difficulty,
+          subskill: "אחוז מתוך כמות",
+          text: `מה הם ${pct}% מתוך ${base}?`,
+          correct: val,
+          options: uniqOptions(val, [val + 10, Math.max(1, val - 10), val + 25]),
+          explanation: "חישוב אחוז מתוך כמות"
+        }));
+
+        const discountPrice = base - val;
+        out.push(makeMultiple({
+          id: `${grade}_pct_disc_${difficulty}_${i}`,
+          grade,
+          topic: "אחוזים",
+          difficulty,
+          subskill: "הנחה",
+          text: `מחיר מוצר הוא ${base} ₪. יש הנחה של ${pct}%. מה המחיר לאחר ההנחה?`,
+          correct: discountPrice,
+          options: uniqOptions(discountPrice, [base + val, val, discountPrice + 20]),
+          explanation: "חישוב מחיר לאחר הנחה"
+        }));
+      }
+
+      return out;
+    }
+
+    function thinkingGenerators(grade, difficulty, count = 12) {
+      const out = [];
+
+      for (let i = 0; i < count; i++) {
+        if (grade === "ד") {
+          const a = rand(10, 60);
+          const b = 100 - a;
+          const wrong1 = `${a} ו-${100 - a + rand(1,5)}`;
+          const wrong2 = `${a + rand(1,5)} ו-${b + rand(1,5)}`;
+          const wrong3 = `${a - rand(1,5)} ו-${b}`;
+
+          out.push(makeMultiple({
+            id: `${grade}_think_sum_${difficulty}_${i}`,
+            grade,
+            topic: "חשיבה מתמטית",
+            difficulty,
+            subskill: "הסבר",
+            text: `איזו תשובה מתאימה לדרישה: "כתוב שני מספרים שסכומם 100"?`,
+            correct: `${a} ו-${b}`,
+            options: shuffle([`${a} ו-${b}`, wrong1, wrong2, wrong3]),
+            explanation: "בודק הבנת משמעות הדרישה"
+          }));
+        }
+
+        if (grade === "ה") {
+          const x = choice([25, 15, 12]);
+          const y = choice([4, 6, 8]);
+          const product = x * y;
+
+          out.push(makeMultiple({
+            id: `${grade}_think_eq_${difficulty}_${i}`,
+            grade,
+            topic: "חשיבה מתמטית",
+            difficulty,
+            subskill: "הנמקה",
+            text: `איזו תשובה מסבירה נכון מדוע <span class="math">${x} × ${y}</span> שווה ל-${product}?`,
+            correct: `מפני שכפל נותן מכפלה, ו-${x} פעמים ${y} שווה ${product}.`,
+            options: shuffle([
+              `מפני שכפל נותן מכפלה, ו-${x} פעמים ${y} שווה ${product}.`,
+              `מפני שבכפל תמיד מחברים את שני המספרים.`,
+              `מפני שהתוצאה תמיד גדולה ב-1 מהמספר הגדול.`,
+              `מפני שכל תרגיל כפל שווה לתוצאה אקראית.`
+            ]),
+            explanation: "בודק הבנת הסבר מתמטי"
+          }));
+        }
+
+        if (grade === "ו") {
+          const divider = choice([10, 100, 1000]);
+
+          out.push(makeMultiple({
+            id: `${grade}_think_div_${difficulty}_${i}`,
+            grade,
+            topic: "חשיבה מתמטית",
+            difficulty,
+            subskill: "הסבר",
+            text: `מה קורה לערך של מספר כאשר מחלקים אותו ב-${divider}?`,
+            correct: `המספר קטן פי ${divider}.`,
+            options: shuffle([
+              `המספר קטן פי ${divider}.`,
+              `המספר גדל פי ${divider}.`,
+              `המספר נשאר תמיד אותו דבר.`,
+              `אי אפשר לדעת בלי לחשב כל מספר בנפרד.`
+            ]),
+            explanation: "בודק הבנת משמעות חילוק"
+          }));
+        }
+      }
+
+      return out;
+    }
+
+    function buildQuestionBank() {
+      let bank = [];
+
+      ["basic","regular","advanced"].forEach(difficulty => {
+        bank.push(...arithmeticGenerators("ג", difficulty, 10));
+        bank.push(...wordProblemGenerators("ג", difficulty, 8));
+        bank.push(...measurementGenerators("ג", difficulty, 8));
+        bank.push(...geometryGenerators("ג", difficulty, 8));
+        bank.push(...literacyGenerators("ג", difficulty, 8));
+
+        bank.push(...arithmeticGenerators("ד", difficulty, 10));
+        bank.push(...wordProblemGenerators("ד", difficulty, 8));
+        bank.push(...fractionGenerators("ד", difficulty, 10));
+        bank.push(...geometryGenerators("ד", difficulty, 10));
+        bank.push(...measurementGenerators("ד", difficulty, 8));
+        bank.push(...literacyGenerators("ד", difficulty, 8));
+        bank.push(...thinkingGenerators("ד", difficulty, 6));
+
+        bank.push(...arithmeticGenerators("ה", difficulty, 10));
+        bank.push(...wordProblemGenerators("ה", difficulty, 8));
+        bank.push(...fractionGenerators("ה", difficulty, 10));
+        bank.push(...geometryGenerators("ה", difficulty, 10));
+        bank.push(...measurementGenerators("ה", difficulty, 8));
+        bank.push(...literacyGenerators("ה", difficulty, 8));
+        bank.push(...thinkingGenerators("ה", difficulty, 6));
+
+        bank.push(...arithmeticGenerators("ו", difficulty, 10));
+        bank.push(...wordProblemGenerators("ו", difficulty, 8));
+        bank.push(...fractionGenerators("ו", difficulty, 10));
+        bank.push(...percentGenerators("ו", difficulty, 10));
+        bank.push(...geometryGenerators("ו", difficulty, 10));
+        bank.push(...measurementGenerators("ו", difficulty, 8));
+        bank.push(...literacyGenerators("ו", difficulty, 8));
+        bank.push(...thinkingGenerators("ו", difficulty, 6));
+      });
+
+      return bank;
+    }
+
+    const QUESTION_BANK = buildQuestionBank();
+
     function renderTopics() {
       const grade = gradeSelect.value;
       const allTopics = ALL_TOPICS_BY_GRADE[grade] || [];
       const container = document.getElementById('topicsContainer');
 
-      container.innerHTML = allTopics.map(topic => `
-        <label class="topic-chip">
+      container.innerHTML = '';
+
+      allTopics.forEach(topic => {
+        const label = document.createElement('label');
+        label.className = 'topic-chip';
+        label.innerHTML = `
           <input type="checkbox" class="topic-checkbox" value="${escapeHtml(topic)}" />
           ${escapeHtml(topic)}
-        </label>
-      `).join('');
+        `;
+        container.appendChild(label);
+      });
     }
 
     function getSelectedTopics() {
@@ -531,15 +985,6 @@
       document.querySelectorAll('.topic-checkbox').forEach(cb => {
         if (defaults.includes(cb.value)) cb.checked = true;
       });
-    }
-
-    function shuffle(arr) {
-      const clone = [...arr];
-      for (let i = clone.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [clone[i], clone[j]] = [clone[j], clone[i]];
-      }
-      return clone;
     }
 
     function buildExam() {
@@ -566,10 +1011,9 @@
       );
 
       let questionPool = matched;
-      if (questionPool.length < Math.max(8, selectedTopics.length * 2)) {
+      if (questionPool.length < selectedTopics.length * QUESTIONS_PER_TOPIC) {
         questionPool = QUESTION_BANK.filter(q =>
           q.grade === grade &&
-          q.examTypes.includes(examType) &&
           selectedTopics.includes(q.topic)
         );
       }
@@ -641,17 +1085,6 @@
           `;
         }
 
-        if (q.type === 'openShort') {
-          return `
-            <div class="question">
-              <div class="progress">שאלה ${questionNumber} מתוך ${activeQuestions.length} • ${escapeHtml(q.topic)}</div>
-              <p><strong>${questionNumber}.</strong> ${q.text}</p>
-              <textarea id="q_${q.id}" placeholder="כתוב תשובה"></textarea>
-              <div class="example">נדרש להסביר בקצרה ובבהירות.</div>
-            </div>
-          `;
-        }
-
         return '';
       }).join('');
     }
@@ -677,34 +1110,6 @@
         regular: 'רגיל',
         advanced: 'מתקדם'
       }[val] || val;
-    }
-
-    function normalizeText(text) {
-      return String(text || '').trim().replace(/\s+/g, ' ').toLowerCase();
-    }
-
-    function evaluateOpenAnswer(q, answer) {
-      const text = normalizeText(answer);
-      if (!text) return 0;
-
-      if (q.id === 'd_think_1') {
-        const has100 = text.includes('100');
-        const hasPlus = text.includes('+') || text.includes('חיבור') || text.includes('בדק') || text.includes('שווה');
-        return has100 && hasPlus ? 1 : 0.5;
-      }
-
-      if (q.id === 'h_think_1') {
-        const has100 = text.includes('100');
-        const hasSame = text.includes('שווה') || text.includes('אותה') || text.includes('תוצאה');
-        return has100 || hasSame ? 1 : 0.5;
-      }
-
-      if (q.id === 'v_think_1') {
-        const hasSmall = text.includes('קטן') || text.includes('פי') || text.includes('1000') || text.includes('אלף');
-        return hasSmall ? 1 : 0.5;
-      }
-
-      return 0.5;
     }
 
     function getQuestionTopicScoreMap() {
@@ -742,21 +1147,24 @@
       if (topic.includes('מספרים')) return 'קושי חישובי או שליטה חלקית בפעולות.';
       if (topic.includes('שברים')) return 'קושי מושגי בהבנת שברים ובהשוואה או חיבור.';
       if (topic.includes('בעיות')) return 'קושי בתרגום שאלה מילולית לפעולה חשבונית.';
-      if (topic.includes('גאומטריה')) return 'קושי במדידה, היקף, שטח או הבנת מבנים.';
+      if (topic.includes('גאומטריה')) return 'קושי בגאומטריה, היקף, שטח או הבנת מבנים.';
+      if (topic.includes('מדידה')) return 'קושי בהמרת יחידות, זמן או מדידה כמותית.';
       if (topic.includes('אוריינות')) return 'קושי ביישום מתמטיקה במצבים יומיומיים.';
-      if (topic.includes('חשיבה')) return 'קושי בהסבר, הנמקה או בדיקת תשובה.';
-      if (topic.includes('זמן') || topic.includes('כסף')) return 'קושי ביישום מושגי זמן וכסף.';
+      if (topic.includes('חשיבה')) return 'קושי בהבנת משמעות מתמטית ובבחירת נימוק נכון.';
+      if (topic.includes('אחוזים')) return 'קושי בחישובי אחוזים ובהבנת אחוז מתוך כמות או הנחה.';
       return 'קושי כללי בתחום זה.';
     }
 
     function buildRecommendation(data) {
       const weak = data.needsSupport || [];
       if (!weak.length) return 'מומלץ להעשיר ולהעמיק: משימות אתגר, שאלות הסבר, חקר דפוסים ופתרון בעיות מרובות שלבים.';
-      if (weak.some(x => x.includes('חשיבה'))) return 'מומלץ לשלב תרגול מונחה של הסבר בכתב, שיח מתמטי, דוגמאות נגדיות ושאלות "למה?".';
+      if (weak.some(x => x.includes('חשיבה'))) return 'מומלץ לשלב תרגול של קריאת תשובות, הבנת נימוק נכון והשוואה בין הסברים מתמטיים.';
       if (weak.some(x => x.includes('בעיות')) || weak.some(x => x.includes('אוריינות'))) return 'מומלץ לתרגל המרה של טקסט לפעולה: סימון נתונים, בחירת פעולה, בדיקת סבירות התוצאה.';
       if (weak.some(x => x.includes('שברים'))) return 'מומלץ לחזק הבנה מושגית של שברים באמצעות ייצוגים חזותיים, השוואות וחיבור שברים פשוטים.';
       if (weak.some(x => x.includes('מספרים'))) return 'מומלץ לבסס שוב ערך ספרה, עובדות כפל, חילוק ותהליכי חישוב מדורגים.';
-      if (weak.some(x => x.includes('גאומטריה'))) return 'מומלץ לחזק הבחנה בין היקף לשטח, תרגול יחידות מידה ופתרון משימות גאומטריות מדורגות.';
+      if (weak.some(x => x.includes('גאומטריה'))) return 'מומלץ לחזק הבחנה בין היקף לשטח, תרגול צורות ותכונותיהן ופתרון משימות גאומטריות מדורגות.';
+      if (weak.some(x => x.includes('מדידה'))) return 'מומלץ לחזק המרות יחידות, זמן ומדידה באמצעות תרגול קצר ועקבי.';
+      if (weak.some(x => x.includes('אחוזים'))) return 'מומלץ לתרגל אחוז מתוך כמות, הנחות וקישור בין אחוז לשבר ולעשרוני.';
       return 'מומלץ לבנות תכנית תרגול קצרה, עקבית ומדורגת, המתמקדת תחילה בתחומים החלשים ורק אחר כך בהעשרה.';
     }
 
@@ -771,12 +1179,7 @@
         const answer = document.getElementById(`q_${q.id}`)?.value || '';
         answers[q.id] = answer;
 
-        let earned = 0;
-        if (q.type === 'multiple') {
-          earned = answer === q.correct ? 1 : 0;
-        } else if (q.type === 'openShort') {
-          earned = evaluateOpenAnswer(q, answer);
-        }
+        const earned = q.type === 'multiple' && answer === q.correct ? 1 : 0;
 
         topicScores[q.topic].score += earned;
         topicScores[q.topic].items.push({
@@ -922,9 +1325,14 @@ ${data.total?.meaning || ''}`;
 
       const quizForm = document.getElementById('quizForm');
       const studentResult = document.getElementById('studentResult');
+      const teacherAccess = document.getElementById('teacherAccess');
 
       if (quizForm) {
         quizForm.classList.add('hidden');
+      }
+
+      if (teacherAccess) {
+        teacherAccess.classList.add('hidden');
       }
 
       if (studentResult) {
@@ -932,13 +1340,20 @@ ${data.total?.meaning || ''}`;
           <div class="score-big">${data.total.percent}</div>
           <p class="score-sub">הציון הסופי</p>
 
-          <div class="btn-row">
-            <button type="button" class="ghost" onclick="continueToPlanGenerator()">פתח תכנית למידה מותאמת</button>
-            <button type="button" class="ghost" onclick="openMicrosoftForm()">שלח תקציר אבחון לטופס Microsoft Forms</button>
-            <button type="button" class="secondary" onclick="showOpenAnalysis()">הצג אבחון מלא</button>
+          <div class="result-box" style="margin-top:16px;background:#fff;">
+            <p><strong>שם התלמיד:</strong> ${escapeHtml(data.student?.name || 'לא הוזן')}</p>
+            <p><strong>כיתה:</strong> ${escapeHtml(data.student?.className || 'לא הוזנה')}</p>
+            <p><strong>שכבה:</strong> ${escapeHtml(data.student?.grade || '')}</p>
+            <p><strong>משמעות כללית:</strong> ${escapeHtml(data.total?.meaning || '')}</p>
           </div>
 
-          <p class="note">אפשר לפתוח מיד תכנית למידה אישית, לשלוח תקציר אבחון, או להציג את האבחון המלא.</p>
+          <div class="btn-row">
+            <button type="button" class="secondary" onclick="showOpenAnalysis()">הצג אבחון מלא</button>
+            <button type="button" class="ghost" onclick="continueToPlanGenerator()">פתח תכנית למידה מותאמת</button>
+            <button type="button" class="ghost" onclick="openMicrosoftForm()">שלח תקציר אבחון לטופס Microsoft Forms</button>
+          </div>
+
+          <p class="note">הציון מוצג כאן תחילה. לאחר מכן ניתן לפתוח אבחון מלא או לעבור למחולל.</p>
         `;
         studentResult.classList.remove('hidden');
       }

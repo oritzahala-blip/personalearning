@@ -65,137 +65,302 @@
       </div>
     </div>
   </div>
+
 <script>
+const KNOWLEDGE_WEIGHTS = {
+  "ג": {"מספרים ופעולות":0.34,"בעיות מילוליות":0.24,"מדידה":0.16,"גאומטריה בסיסית":0.16,"אוריינות מתמטית":0.10},
+  "ד": {"מספרים ופעולות":0.24,"בעיות מילוליות":0.18,"שברים":0.18,"גאומטריה":0.12,"מדידה":0.12,"אוריינות מתמטית":0.10,"חשיבה מתמטית":0.06},
+  "ה": {"מספרים ופעולות":0.22,"בעיות מילוליות":0.18,"שברים":0.18,"גאומטריה":0.12,"מדידה":0.10,"אוריינות מתמטית":0.12,"חשיבה מתמטית":0.08},
+  "ו": {"מספרים ופעולות":0.18,"בעיות מילוליות":0.16,"שברים":0.15,"אחוזים":0.17,"גאומטריה":0.10,"מדידה":0.08,"אוריינות מתמטית":0.10,"חשיבה מתמטית":0.06}
+};
+
+const DIFFICULTY_PROFILE = {
+  basic:{threshold:65,factorAboveThreshold:0.85,label:"בסיסי"},
+  regular:{threshold:65,factorAboveThreshold:1.00,label:"רגיל"},
+  advanced:{threshold:65,factorAboveThreshold:1.15,label:"מתקדם"}
+};
+
 const TOPIC_TEMPLATES = {
-  'מספרים ופעולות': {
-    explanation:'ביסוס ערך ספרה, ארבע פעולות החשבון, אסטרטגיות חישוב ובקרה על תשובה.',
+  "מספרים ופעולות": {
+    explanation:"ביסוס ערך ספרה, ארבע פעולות החשבון, אסטרטגיות חישוב ובקרה על תשובה.",
     exercises:[
-      {prompt:'חשב: 4,208 + 1,376',hint:'חבר לפי אחדות, עשרות, מאות ואלפים.',answer:'5,584',feedback:'אם טעית, בדוק האם בוצעה המרה נכונה.'},
-      {prompt:'חשב: 8,540 - 2,175',hint:'אפשר לפרק לשלבים או לפתור במאונך.',answer:'6,365',feedback:'בדוק השאלה בעשרות ובמאות.'}
+      {prompt:"חשב: 4,208 + 1,376",hint:"חבר לפי אחדות, עשרות, מאות ואלפים.",answer:"5,584",feedback:"אם טעית, בדוק האם בוצעה המרה נכונה."},
+      {prompt:"חשב: 8,540 - 2,175",hint:"אפשר לפרק לשלבים או לפתור במאונך.",answer:"6,365",feedback:"בדוק השאלה בעשרות ובמאות."},
+      {prompt:"חשב: 36 × 7",hint:"אפשר לפרק: 30×7 ועוד 6×7.",answer:"252",feedback:"פירוק נכון מקל על השליטה בתהליך."}
     ]
   },
-  'שברים': {
-    explanation:'חיזוק הבנה מושגית של שברים, השוואה, חיבור והמרה לייצוגים מקבילים.',
+  "שברים": {
+    explanation:"חיזוק הבנה מושגית של שברים, השוואה, חיבור והמרה לייצוגים שקולים.",
     exercises:[
-      {prompt:'מה גדול יותר: 3/4 או 5/8?',hint:'אפשר להשוות למכנה 8.',answer:'3/4',feedback:'3/4 הם 6/8 ולכן גדולים מ-5/8.'},
-      {prompt:'חשב: 1/2 + 1/4',hint:'כתוב 1/2 כ-2/4.',answer:'3/4',feedback:'2/4 ועוד 1/4 הם 3/4.'}
+      {prompt:"מה גדול יותר: 3/4 או 5/8?",hint:"אפשר להשוות למכנה 8.",answer:"3/4",feedback:"3/4 הם 6/8 ולכן גדולים מ-5/8."},
+      {prompt:"חשב: 1/2 + 1/4",hint:"כתוב 1/2 כ-2/4.",answer:"3/4",feedback:"2/4 ועוד 1/4 הם 3/4."},
+      {prompt:"איזה שבר מייצג 6 חלקים מתוך 8?",hint:"כתוב חלק מתוך שלם.",answer:"6/8",feedback:"חשוב להבחין בין מונה למכנה."}
     ]
   },
-  'שברים ושברים עשרוניים': {
-    explanation:'חיזוק מעבר בין שברים לשברים עשרוניים, השוואה ויישום.',
+  "אחוזים": {
+    explanation:"קישור בין אחוזים, חלק מתוך שלם, מחיר לאחר הנחה ויישומים יומיומיים.",
     exercises:[
-      {prompt:'המר את 3/5 לשבר עשרוני.',hint:'חלק 3 ב-5.',answer:'0.6',feedback:'3/5 שווה 0.6.'},
-      {prompt:'מה גדול יותר: 0.7 או 2/3?',hint:'אפשר להמיר את 2/3 בקירוב.',answer:'0.7',feedback:'0.7 גדול מעט מ-0.666...'}
+      {prompt:"20% מתוך 80 הם?",hint:"10% מתוך 80 הם 8.",answer:"16",feedback:"20% הם פעמיים 10%."},
+      {prompt:"מחיר מוצר הוא 200 ₪ ויש הנחה של 15%. מה גובה ההנחה?",hint:"10% הם 20 ו-5% הם 10.",answer:"30",feedback:"15% מתוך 200 הם 30."},
+      {prompt:"מה המחיר לאחר הנחה של 10% על 350 ₪?",hint:"חשב את סכום ההנחה ואז הפחת.",answer:"315",feedback:"10% מתוך 350 הם 35 ולכן 350-35=315."}
     ]
   },
-  'אחוזים ושברים': {
-    explanation:'קישור בין אחוזים, שברים ויישומים במצבי קנייה, הנחה והשוואה.',
+  "בעיות מילוליות": {
+    explanation:"תרגול תרגום של טקסט לפעולה, פתרון בשלבים ובדיקת סבירות התוצאה.",
     exercises:[
-      {prompt:'20% מתוך 80 הם?',hint:'10% מתוך 80 הם 8.',answer:'16',feedback:'20% הם פעמיים 10% ולכן 16.'},
-      {prompt:'מחיר מוצר 200 ₪ והנחה 15%. מה גובה ההנחה?',hint:'10% הם 20, ו-5% הם 10.',answer:'30',feedback:'15% מתוך 200 הם 30.'}
+      {prompt:"בספרייה היו 180 ספרים. הגיעו עוד 35 ואז 20 הושאלו. כמה נשארו?",hint:"בנה רצף פעולות.",answer:"195",feedback:"180+35=215 ואז 215-20=195."},
+      {prompt:"5 עפרונות עולים 15 ₪. כמה יעלו 8 עפרונות?",hint:"מצא מחיר לעיפרון אחד.",answer:"24",feedback:"15/5=3 ואז 8×3=24."},
+      {prompt:"בכיתה 28 תלמידים. 7 נעדרו. כמה הגיעו?",hint:"זהו תרגיל חיסור.",answer:"21",feedback:"חשוב לזהות אם מוסיפים או מפחיתים."}
     ]
   },
-  'יחס ופרופורציה': {
-    explanation:'הבנת יחס, פרופורציה פשוטה והעברת יחסים למצבים מילוליים.',
+  "גאומטריה": {
+    explanation:"חיזוק מושגים בגאומטריה: צלעות, קודקודים, זוויות, היקף ושטח.",
     exercises:[
-      {prompt:'ביחס 2:3, אם הכמות הקטנה היא 8, מהי הגדולה?',hint:'מצא פי כמה 2 הפך ל-8.',answer:'12',feedback:'היחס הוכפל פי 4 ולכן 3 הפך ל-12.'},
-      {prompt:'אם 3 מחברות עולות 18 ₪, כמה יעלו 5?',hint:'מצא מחיר ליחידה.',answer:'30',feedback:'18 חלקי 3 הם 6, ו-5 כפול 6 הם 30.'}
+      {prompt:"מהו ההיקף של מלבן שאורכו 7 ס״מ ורוחבו 3 ס״מ?",hint:"היקף הוא סכום כל הצלעות.",answer:"20",feedback:"2×(7+3)=20."},
+      {prompt:"מהו השטח של אותו מלבן?",hint:"שטח = אורך × רוחב.",answer:"21",feedback:"7×3=21."},
+      {prompt:"לריבוע יש כמה קודקודים?",hint:"חשוב על ארבע הפינות.",answer:"4",feedback:"לריבוע 4 צלעות ו-4 קודקודים."}
     ]
   },
-  'בעיות מילוליות': {
-    explanation:'תרגול תרגום של טקסט לפעולה, פתרון בשלבים ובדיקת סבירות התוצאה.',
+  "גאומטריה בסיסית": {
+    explanation:"חיזוק זיהוי צורות, מספר צלעות, קודקודים והבחנה בין מצולעים לצורות אחרות.",
     exercises:[
-      {prompt:'בספרייה היו 180 ספרים. הגיעו עוד 35 ואז 20 הושאלו. כמה נשארו?',hint:'בנה רצף פעולות.',answer:'195',feedback:'180+35=215 ואז 215-20=195.'},
-      {prompt:'5 עפרונות עולים 15 ₪. כמה יעלו 8 עפרונות?',hint:'מצא מחיר לעיפרון אחד.',answer:'24',feedback:'15/5=3 ואז 8×3=24.'}
+      {prompt:"לאיזו צורה יש 3 צלעות?",hint:"חשוב על הצורה הפשוטה ביותר עם 3 קווים.",answer:"משולש",feedback:"משולש הוא מצולע בן 3 צלעות."},
+      {prompt:"למלבן יש כמה צלעות?",hint:"ספר את כל הקווים התוחמים.",answer:"4",feedback:"למלבן 4 צלעות."},
+      {prompt:"איזו צורה אינה מצולע: ריבוע, מלבן, עיגול, משולש?",hint:"מצולע בנוי מצלעות ישרות.",answer:"עיגול",feedback:"לעיגול אין צלעות ישרות."}
     ]
   },
-  'גאומטריה ומדידה': {
-    explanation:'הבחנה בין היקף, שטח, נפח, צורות והמרות יחידות.',
+  "מדידה": {
+    explanation:"תרגול המרות יחידות, זמן, אורך וכמויות מדידות.",
     exercises:[
-      {prompt:'מהו ההיקף של מלבן שאורכו 7 ס״מ ורוחבו 3 ס״מ?',hint:'היקף הוא סכום כל הצלעות.',answer:'20',feedback:'2×(7+3)=20.'},
-      {prompt:'מהו השטח של אותו מלבן?',hint:'שטח = אורך × רוחב.',answer:'21',feedback:'7×3=21.'}
+      {prompt:"כמה ס״מ יש ב-3 מטרים?",hint:"מטר אחד הוא 100 ס״מ.",answer:"300",feedback:"3×100=300."},
+      {prompt:"כמה דקות יש בשעתיים ו-20 דקות?",hint:"שעתיים הן 120 דקות.",answer:"140",feedback:"120+20=140."},
+      {prompt:"כמה מטרים הם 450 ס״מ?",hint:"חלק ב-100.",answer:"4.5",feedback:"450 ס״מ הם 4.5 מטרים."}
     ]
   },
-  'אוריינות מתמטית': {
-    explanation:'יישום מתמטיקה במצבי זמן, כסף, נתונים והשוואה במציאות.',
+  "אוריינות מתמטית": {
+    explanation:"יישום מתמטיקה במצבי זמן, כסף, נתונים והשוואה במציאות.",
     exercises:[
-      {prompt:'אוטובוס יצא ב-13:20 והנסיעה נמשכה שעה ו-35 דקות. מתי הגיע?',hint:'הוסף שעה ואז 35 דקות.',answer:'14:55',feedback:'13:20+1:35 = 14:55.'},
-      {prompt:'3 בקבוקי מים עולים 18 ₪. כמה יעלו 5?',hint:'מצא מחיר ליחידה.',answer:'30',feedback:'18/3=6 ואז 6×5=30.'}
+      {prompt:"אוטובוס יצא ב-13:20 והנסיעה נמשכה שעה ו-35 דקות. מתי הגיע?",hint:"הוסף שעה ואז 35 דקות.",answer:"14:55",feedback:"13:20+1:35 = 14:55."},
+      {prompt:"3 בקבוקי מים עולים 18 ₪. כמה יעלו 5?",hint:"מצא מחיר ליחידה.",answer:"30",feedback:"18/3=6 ואז 6×5=30."},
+      {prompt:"מחברת עולה 8 ₪. כמה יעלו 4 מחברות?",hint:"זהו מצב של כפל.",answer:"32",feedback:"4×8=32."}
     ]
   },
-  'חשיבה מתמטית והבנה': {
-    explanation:'חיזוק היכולת להסביר, לנמק, לבדוק תשובה ולהצדיק מהלך.',
+  "חשיבה מתמטית": {
+    explanation:"חיזוק היכולת להסביר, לנמק, לבדוק תשובה ולזהות קשרים מתמטיים.",
     exercises:[
-      {prompt:'הסבר מדוע 25 × 4 שווה ל-50 × 2.',hint:'בדוק את שתי המכפלות.',answer:'שתיהן שוות ל-100.',feedback:'המטרה היא להסביר לא רק מה התשובה אלא למה.'},
-      {prompt:'כתוב שני מספרים שסכומם 100 והסבר את דרך הבדיקה.',hint:'אפשר לבחור כל זוג מתאים.',answer:'למשל 40 ו-60; בדקתי על ידי חיבור.',feedback:'חשוב לצרף גם הסבר בדיקה.'}
+      {prompt:"איזו תשובה מתאימה יותר לשאלה: מה גדול יותר, 3/4 או 5/8? א. 5/8 כי 8 גדול מ-4. ב. 3/4 כי 3/4 = 6/8. ג. שניהם שווים. ד. אי אפשר לדעת.",hint:"חפש תשובה שמסבירה את ההשוואה עצמה.",answer:"ב",feedback:"חשיבה מתמטית טובה כוללת גם נימוק נכון."},
+      {prompt:"איזו תשובה מסבירה נכון מדוע 25×4 שווה 50×2? א. כי 25 גדול יותר. ב. כי שתי המכפלות שוות ל-100. ג. כי 4 קטן מ-2. ד. כי זה רק במקרה.",hint:"בדוק את תוצאת שתי המכפלות.",answer:"ב",feedback:"הקשר הנכון הוא שהתוצאה הסופית זהה."},
+      {prompt:"איזו דרך בדיקה עדיפה לאחר פתרון תרגיל? א. לא לבדוק כלל. ב. לפתור שוב בדרך אחרת. ג. לבחור תשובה אקראית. ד. למחוק הכול.",hint:"חשיבה מתמטית כוללת בקרה עצמית.",answer:"ב",feedback:"בדיקה בדרך נוספת מחזקת דיוק והבנה."}
     ]
   }
 };
 
 function safeParseJSON(text){try{return JSON.parse(text)}catch(e){return null}}
-function escapeHtml(str){return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;')}
+
+function escapeHtml(str){
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#39;");
+}
+
 function preload(){
-  const diagnostic = localStorage.getItem('diagnosticStructuredData');
-  const studentName = localStorage.getItem('diagnosticStudentName') || '';
-  const className = localStorage.getItem('diagnosticClassName') || '';
-  const teacherName = localStorage.getItem('diagnosticTeacherName') || '';
-  if (diagnostic) document.getElementById('diagnosticInput').value = diagnostic;
-  document.getElementById('studentName2').value = studentName;
-  document.getElementById('homeClass').value = className;
-  document.getElementById('teacherName').value = teacherName;
-  const d = new Date();
-  document.getElementById('planDate').value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const diagnostic=localStorage.getItem("diagnosticStructuredData");
+  const studentName=localStorage.getItem("diagnosticStudentName")||"";
+  const className=localStorage.getItem("diagnosticClassName")||"";
+  const teacherName=localStorage.getItem("diagnosticTeacherName")||"";
+  if(diagnostic)document.getElementById("diagnosticInput").value=diagnostic;
+  document.getElementById("studentName2").value=studentName;
+  document.getElementById("homeClass").value=className;
+  document.getElementById("teacherName").value=teacherName;
+  const d=new Date();
+  document.getElementById("planDate").value=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 }
-function buildSummary(diagnostic, weak, medium){
-  const w = weak.length ? weak.map(x=>`<li><strong>${escapeHtml(x.domain_name)}:</strong> ${escapeHtml(x.difficulty_type)} (${x.percent}%)</li>`).join('') : '<li>לא זוהו תחומים חלשים ברמת חיזוק משמעותי.</li>';
-  const m = medium.length ? medium.map(x=>`<li><strong>${escapeHtml(x.domain_name)}:</strong> נדרש ביסוס נוסף (${x.percent}%).</li>`).join('') : '<li>לא זוהו תחומים ברמת ביניים.</li>';
-  return `<p><strong>רמת שליטה כללית:</strong> ${escapeHtml(diagnostic.summary?.level || '')}</p>
-  <p><strong>משמעות כללית:</strong> ${escapeHtml(diagnostic.summary?.meaning || '')}</p>
-  <h4>תחומים המחייבים חיזוק</h4><ul>${w}</ul>
-  <h4>תחומים הדורשים ביסוס</h4><ul>${m}</ul>`;
+
+function normalizeTopicName(name){
+  const map={
+    "גאומטריה ומדידה":["גאומטריה","מדידה"],
+    "חשיבה מתמטית והבנה":["חשיבה מתמטית"]
+  };
+  return map[name]||[name];
 }
-function makeItem(domainName, level, timeframe, notes){
-  const tpl = TOPIC_TEMPLATES[domainName] || TOPIC_TEMPLATES['מספרים ופעולות'];
-  return {
-    type: timeframe === 'week' ? 'דף עבודה' : 'חידון ממוקד',
-    title: `${timeframe === 'week' ? 'דף עבודה' : 'חידון'} – ${domainName}`,
-    target_domain: domainName,
-    goal: `שיפור הדרגתי בתחום ${domainName} ברמת ${level}.`,
-    explanation: tpl.explanation,
+
+function getGradeWeightMap(grade){return KNOWLEDGE_WEIGHTS[grade]||{}}
+
+function adjustPercentByDifficulty(percent,difficulty){
+  const profile=DIFFICULTY_PROFILE[difficulty]||DIFFICULTY_PROFILE.regular;
+  if(percent<=profile.threshold)return Math.round(percent);
+  const adjusted=profile.threshold+(percent-profile.threshold)*profile.factorAboveThreshold;
+  return Math.max(0,Math.min(100,Math.round(adjusted)));
+}
+
+function collectWeakSubskills(domain){
+  const items=domain.items||[];
+  const buckets={};
+  items.forEach(item=>{
+    const key=item.subskill||"מיומנות כללית";
+    if(!buckets[key])buckets[key]={earned:0,max:0};
+    buckets[key].earned+=Number(item.earned||0);
+    buckets[key].max+=Number(item.max||1);
+  });
+  return Object.entries(buckets).map(([subskill,stats])=>{
+    const percent=stats.max?Math.round((stats.earned/stats.max)*100):0;
+    return{subskill,percent};
+  }).sort((a,b)=>a.percent-b.percent);
+}
+
+function buildDomainAnalysis(diagnostic){
+  const domains=diagnostic.domains||{};
+  const difficulty=diagnostic.exam_config?.difficulty||"regular";
+  const grade=diagnostic.student?.grade||"";
+  const weightMap=getGradeWeightMap(grade);
+  const flat=[];
+  Object.values(domains).forEach(domain=>{
+    const names=normalizeTopicName(domain.domain_name);
+    names.forEach(name=>{
+      const adjustedPercent=adjustPercentByDifficulty(domain.percent,difficulty);
+      const baseWeight=weightMap[name]??0.08;
+      const weight=names.length>1?baseWeight/names.length:baseWeight;
+      const gap=100-adjustedPercent;
+      const weightedGap=+(gap*weight).toFixed(2);
+      flat.push({
+        domain_name:name,
+        raw_domain_name:domain.domain_name,
+        percent:domain.percent,
+        adjusted_percent:adjustedPercent,
+        weight,
+        weighted_gap:weightedGap,
+        mastery_level:domain.mastery_level,
+        difficulty_type:domain.difficulty_type,
+        teacher_meaning:domain.teacher_meaning,
+        weak_subskills:collectWeakSubskills(domain)
+      });
+    });
+  });
+  return flat.sort((a,b)=>b.weighted_gap-a.weighted_gap);
+}
+
+function getLevelBand(adjustedPercent){
+  if(adjustedPercent<40)return"חיזוק יסודי";
+  if(adjustedPercent<60)return"חיזוק משמעותי";
+  if(adjustedPercent<85)return"ביסוס";
+  return"העמקה";
+}
+
+function getExerciseCountByPriority(rank,timeframe){
+  if(timeframe==="week"){
+    if(rank===0)return 5;
+    if(rank===1)return 4;
+    if(rank===2)return 4;
+    return 3;
+  }
+  if(rank===0)return 4;
+  if(rank===1)return 3;
+  return 2;
+}
+
+function buildSubskillNote(weakSubskills){
+  if(!weakSubskills||!weakSubskills.length)return"";
+  const weakest=weakSubskills.filter(x=>x.percent<70).slice(0,2);
+  if(!weakest.length)return"";
+  return`דגש מיוחד: ${weakest.map(x=>`${x.subskill} (${x.percent}%)`).join(", ")}.`;
+}
+
+function makeItem(domainAnalysis,timeframe,rank,studentNotes){
+  const template=TOPIC_TEMPLATES[domainAnalysis.domain_name]||TOPIC_TEMPLATES["מספרים ופעולות"];
+  const count=getExerciseCountByPriority(rank,timeframe);
+  const level=getLevelBand(domainAnalysis.adjusted_percent);
+  const subskillNote=buildSubskillNote(domainAnalysis.weak_subskills);
+  const notes=[studentNotes,subskillNote].filter(Boolean).join(" ");
+  return{
+    type:timeframe==="week"?"דף עבודה":"חידון ממוקד",
+    title:`${timeframe==="week"?"דף עבודה":"חידון"} – ${domainAnalysis.domain_name}`,
+    target_domain:domainAnalysis.domain_name,
+    goal:`שיפור בתחום ${domainAnalysis.domain_name} ברמת ${level}, על בסיס ציון מותאם ${domainAnalysis.adjusted_percent}%.`,
+    explanation:template.explanation,
     level,
-    exercises: tpl.exercises,
-    notes
+    weighted_gap:domainAnalysis.weighted_gap,
+    weight:domainAnalysis.weight,
+    adjusted_percent:domainAnalysis.adjusted_percent,
+    raw_percent:domainAnalysis.percent,
+    weak_subskills:domainAnalysis.weak_subskills,
+    notes,
+    exercises:template.exercises.slice(0,count)
   };
 }
+
+function buildSummary(diagnostic,domainAnalysis){
+  const topWeak=domainAnalysis.filter(d=>d.adjusted_percent<85).slice(0,5);
+  const weakHtml=topWeak.length?topWeak.map(d=>`
+    <li>
+      <strong>${escapeHtml(d.domain_name)}:</strong>
+      ציון גולמי ${d.percent}%,
+      ציון מותאם ${d.adjusted_percent}%,
+      משקל ${(d.weight*100).toFixed(0)}%,
+      פער משוקלל ${d.weighted_gap}.
+    </li>
+  `).join(""):`<li>לא זוהו תחומים בולטים המחייבים טיפול.</li>`;
+  return`
+    <p><strong>רמת שליטה כללית:</strong> ${escapeHtml(diagnostic.summary?.level||"")}</p>
+    <p><strong>משמעות כללית:</strong> ${escapeHtml(diagnostic.summary?.meaning||"")}</p>
+    <p><strong>רמת קושי של האבחון:</strong> ${escapeHtml(diagnostic.exam_config?.difficulty||"")}</p>
+    <h4>תחומים בעדיפות טיפול</h4>
+    <ul>${weakHtml}</ul>
+  `;
+}
+
 function generateProgram(){
-  const teacherName = document.getElementById('teacherName').value.trim();
-  const studentName = document.getElementById('studentName2').value.trim();
-  const homeClass = document.getElementById('homeClass').value.trim();
-  const planDate = document.getElementById('planDate').value;
-  const timeframe = document.getElementById('timeframe').value;
-  const studentNotes = document.getElementById('studentNotes').value.trim();
-  const diagnosticText = document.getElementById('diagnosticInput').value.trim();
-  const msg = document.getElementById('detailsMsg');
-  if (!studentName) { msg.innerHTML = '<p style="color:#b42318;font-weight:bold">שם התלמיד הוא שדה חובה.</p>'; return; }
-  const diagnostic = safeParseJSON(diagnosticText);
-  if (!diagnostic) { msg.innerHTML = '<p style="color:#b42318;font-weight:bold">קוד האבחון אינו בפורמט תקין.</p>'; return; }
-  msg.innerHTML = '';
-  const domains = diagnostic.domains || {};
-  const weak = Object.values(domains).filter(v => Number(v.percent) < 60);
-  const medium = Object.values(domains).filter(v => Number(v.percent) >= 60 && Number(v.percent) < 85);
-  const targets = weak.length ? weak : medium.length ? medium : Object.values(domains).slice(0,2);
-  const items = targets.slice(0, timeframe === 'week' ? 5 : 3).map(d => makeItem(d.domain_name, d.mastery_level || d.level || 'חיזוק', timeframe, studentNotes));
-  if (timeframe === 'week' && items.length < 5) {
-    ['אוריינות מתמטית','חשיבה מתמטית והבנה'].forEach(name => { if (items.length < 5) items.push(makeItem(name,'ביסוס',timeframe,studentNotes)); });
+  const teacherName=document.getElementById("teacherName").value.trim();
+  const studentName=document.getElementById("studentName2").value.trim();
+  const homeClass=document.getElementById("homeClass").value.trim();
+  const planDate=document.getElementById("planDate").value;
+  const timeframe=document.getElementById("timeframe").value;
+  const studentNotes=document.getElementById("studentNotes").value.trim();
+  const diagnosticText=document.getElementById("diagnosticInput").value.trim();
+  const msg=document.getElementById("detailsMsg");
+
+  if(!studentName){
+    msg.innerHTML='<p style="color:#b42318;font-weight:bold">שם התלמיד הוא שדה חובה.</p>';
+    return;
   }
-  document.getElementById('summaryBox').innerHTML = buildSummary(diagnostic, weak, medium);
-  document.getElementById('resourceIndex').innerHTML = items.map((it,i)=>`<li>${escapeHtml(it.title)} <span class="pill">${escapeHtml(it.type)}</span></li>`).join('');
-  document.getElementById('programContent').innerHTML = items.map((it,i)=>`
+
+  const diagnostic=safeParseJSON(diagnosticText);
+  if(!diagnostic){
+    msg.innerHTML='<p style="color:#b42318;font-weight:bold">קוד האבחון אינו בפורמט תקין.</p>';
+    return;
+  }
+
+  msg.innerHTML="";
+  const domainAnalysis=buildDomainAnalysis(diagnostic);
+  const targetDomains=domainAnalysis.filter(d=>d.adjusted_percent<85);
+  const fallbackDomains=domainAnalysis.slice(0,2);
+  const chosenDomains=(targetDomains.length?targetDomains:fallbackDomains).slice(0,timeframe==="week"?5:3);
+  const items=chosenDomains.map((domain,index)=>makeItem(domain,timeframe,index,studentNotes));
+
+  document.getElementById("summaryBox").innerHTML=buildSummary(diagnostic,domainAnalysis);
+
+  document.getElementById("resourceIndex").innerHTML=items.map(it=>`
+    <li>
+      ${escapeHtml(it.title)}
+      <span class="pill">${escapeHtml(it.type)}</span>
+      <span class="pill">משקל ${(it.weight*100).toFixed(0)}%</span>
+      <span class="pill">ציון מותאם ${it.adjusted_percent}%</span>
+    </li>
+  `).join("");
+
+  document.getElementById("programContent").innerHTML=items.map((it,i)=>`
     <details open>
       <summary>${i+1}. ${escapeHtml(it.title)} <span class="pill">${escapeHtml(it.type)}</span></summary>
       <p><strong>מטרה:</strong> ${escapeHtml(it.goal)}</p>
       <p><strong>הסבר:</strong> ${escapeHtml(it.explanation)}</p>
-      ${it.notes ? `<p><strong>התאמה נוספת:</strong> ${escapeHtml(it.notes)}</p>` : ''}
+      <p><strong>ציון גולמי:</strong> ${it.raw_percent}%</p>
+      <p><strong>ציון מותאם:</strong> ${it.adjusted_percent}%</p>
+      <p><strong>משקל תחום:</strong> ${(it.weight*100).toFixed(0)}%</p>
+      <p><strong>פער משוקלל:</strong> ${it.weighted_gap}</p>
+      ${it.notes?`<p><strong>התאמה נוספת:</strong> ${escapeHtml(it.notes)}</p>`:""}
+      ${it.weak_subskills?.length?`<p><strong>תתי-מיומנויות:</strong> ${escapeHtml(it.weak_subskills.slice(0,3).map(x=>`${x.subskill} (${x.percent}%)`).join(", "))}</p>`:""}
       ${(it.exercises||[]).map((ex,idx)=>`
         <div class="exercise">
           <strong>תרגיל ${idx+1}:</strong> ${escapeHtml(ex.prompt)}
@@ -206,25 +371,47 @@ function generateProgram(){
           <div id="hint_${i}_${idx}" class="feedback hidden"><strong>רמז:</strong> ${escapeHtml(ex.hint)}</div>
           <div id="ans_${i}_${idx}" class="feedback hidden"><strong>תשובה:</strong> ${escapeHtml(ex.answer)}<br><strong>פידבק:</strong> ${escapeHtml(ex.feedback)}</div>
         </div>
-      `).join('')}
+      `).join("")}
     </details>
-  `).join('');
-  const output = {
-    teacher_name: teacherName,
-    student_name: studentName,
-    home_class: homeClass,
-    created_at: planDate,
+  `).join("");
+
+  const output={
+    teacher_name:teacherName,
+    student_name:studentName,
+    home_class:homeClass,
+    created_at:planDate,
     timeframe,
-    notes: studentNotes,
-    diagnostic_summary: diagnostic,
-    generated_items: items.map(it => ({type:it.type,title:it.title,target_domain:it.target_domain,goal:it.goal,level:it.level}))
+    notes:studentNotes,
+    weighting_model:{
+      knowledge_weights:KNOWLEDGE_WEIGHTS[diagnostic.student?.grade||""]||{},
+      difficulty_profile:DIFFICULTY_PROFILE[diagnostic.exam_config?.difficulty||"regular"]||DIFFICULTY_PROFILE.regular
+    },
+    diagnostic_summary:diagnostic,
+    domain_analysis:domainAnalysis,
+    generated_items:items.map(it=>({
+      type:it.type,
+      title:it.title,
+      target_domain:it.target_domain,
+      goal:it.goal,
+      level:it.level,
+      weight:it.weight,
+      weighted_gap:it.weighted_gap,
+      adjusted_percent:it.adjusted_percent,
+      weak_subskills:it.weak_subskills
+    }))
   };
-  document.getElementById('programJson').value = JSON.stringify(output, null, 2);
-  document.getElementById('programArea').classList.remove('hidden');
-  window.scrollTo({top:document.getElementById('programArea').offsetTop-20, behavior:'smooth'});
+
+  document.getElementById("programJson").value=JSON.stringify(output,null,2);
+  document.getElementById("programArea").classList.remove("hidden");
+  window.scrollTo({top:document.getElementById("programArea").offsetTop-20,behavior:"smooth"});
 }
-function toggleBlock(id){ const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
-document.addEventListener('DOMContentLoaded', preload);
+
+function toggleBlock(id){
+  const el=document.getElementById(id);
+  if(el)el.classList.toggle("hidden");
+}
+
+document.addEventListener("DOMContentLoaded",preload);
 </script>
 </body>
 </html>
